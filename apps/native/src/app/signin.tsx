@@ -17,16 +17,16 @@ import { SafeAreaView } from "react-native-safe-area-context";
 import { Controller, useForm } from "react-hook-form";
 import * as Yup from "yup";
 import { yupResolver } from "@hookform/resolvers/yup";
-import { t } from "i18next";
 
 const schema = Yup.object({
 	email: Yup.string()
-		.email(t("form.error.email.invalid"))
-		.required(t("form.error.email.required")),
-	password: Yup.string().required(t("form.error.password.required")),
+		.email("form.error.email.invalid")
+		.required("form.error.email.required"),
+	password: Yup.string().required("form.error.password.required"),
 });
 
 export default function SignIn() {
+	const { t } = useTranslation();
 	const navigation = useNavigation();
 	const {
 		control,
@@ -97,7 +97,7 @@ export default function SignIn() {
 											className="text-destructive"
 											nativeID="email"
 										>
-											{errors["email"].message}
+											{t(errors["email"].message!!)}
 										</Label>
 									)}
 								</View>
@@ -125,7 +125,7 @@ export default function SignIn() {
 											className="text-destructive"
 											nativeID="password"
 										>
-											{errors["password"].message}
+											{t(errors["password"].message!!)}
 										</Label>
 									)}
 								</View>

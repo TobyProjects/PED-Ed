@@ -11,30 +11,32 @@ import { Keyboard, TouchableWithoutFeedback, View } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
 import * as Yup from "yup";
 import { yupResolver } from "@hookform/resolvers/yup";
+import { useTranslation } from "react-i18next";
 
 const schema = Yup.object({
 	email: Yup.string()
-		.email(t("form.error.email.invalid"))
-		.required(t("form.error.email.required")),
+		.email("form.error.email.invalid")
+		.required("form.error.email.required"),
 	displayName: Yup.string()
-		.required(t("form.error.displayName.required"))
-		.min(5, t("form.error.displayName.tooShort"))
-		.max(20, t("form.error.displayName.tooLong")),
+		.required("form.error.displayName.required")
+		.min(5, "form.error.displayName.tooShort")
+		.max(20, "form.error.displayName.tooLong"),
 	username: Yup.string()
-		.required(t("form.error.username.required"))
-		.min(5, t("form.error.username.tooShort"))
-		.max(20, t("form.error.username.tooLong")),
+		.required("form.error.username.required")
+		.min(5, "form.error.username.tooShort")
+		.max(20, "form.error.username.tooLong"),
 	password: Yup.string()
-		.required(t("form.error.password.required"))
-		.min(8, t("form.error.password.tooShort"))
-		.max(100, t("form.error.password.tooLong")),
+		.required("form.error.password.required")
+		.min(8, "form.error.password.tooShort")
+		.max(100, "form.error.password.tooLong"),
 	password2: Yup.string().oneOf(
 		[Yup.ref("password")],
-		t("form.error.password.mismatch")
+		"form.error.password.mismatch"
 	),
 });
 
 export default function SignUp() {
+	const {t} = useTranslation()
 	const navigation = useNavigation();
 	const {
 		control,
@@ -105,7 +107,7 @@ export default function SignUp() {
 											className="text-destructive"
 											nativeID="email"
 										>
-											{errors["email"].message}
+											{t(errors["email"].message!!)}
 										</Label>
 									)}
 								</View>
@@ -139,7 +141,7 @@ export default function SignUp() {
 											className="text-destructive"
 											nativeID="displayName"
 										>
-											{errors["displayName"].message}
+											{t(errors["displayName"].message!!)}
 										</Label>
 									)}
 								</View>
@@ -170,7 +172,7 @@ export default function SignUp() {
 											className="text-destructive"
 											nativeID="username"
 										>
-											{errors["username"].message}
+											{t(errors["username"].message!!)}
 										</Label>
 									)}
 								</View>
@@ -205,7 +207,7 @@ export default function SignUp() {
 											className="text-destructive"
 											nativeID="password"
 										>
-											{errors["password"].message}
+											{t(errors["password"].message!!)}
 										</Label>
 									)}
 								</View>
@@ -237,7 +239,7 @@ export default function SignUp() {
 											className="text-destructive"
 											nativeID="password2"
 										>
-											{errors["password2"].message}
+											{t(errors["password2"].message!!)}
 										</Label>
 									)}
 								</View>
