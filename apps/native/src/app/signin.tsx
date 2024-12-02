@@ -3,7 +3,7 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Text } from "@/components/ui/text";
-import { useNavigation } from "expo-router";
+import { useNavigation, useRouter } from "expo-router";
 import React, { useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
 import {
@@ -31,6 +31,7 @@ const schema = Yup.object({
 export default function SignIn() {
   const { t } = useTranslation();
   const navigation = useNavigation();
+  const router = useRouter()
   const {
     control,
     handleSubmit,
@@ -137,7 +138,7 @@ export default function SignIn() {
                   </View>
                   <Pressable
                     className="self-start"
-                    onPress={() => console.log("forgot")}
+                    onPress={() => router.replace("/reset-password")}
                   >
                     <Text className="text-blue-500">
                       {t("form.login.label.forgot-password")}
