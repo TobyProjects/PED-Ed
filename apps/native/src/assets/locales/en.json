@@ -3,6 +3,11 @@
 	"welcome-text": "Welcome to",
 	"slogan": "The free and effective way to learn",
 
+  "_AlertDialog": "Alert dialog",
+  "alert.register.successfully.title": "Account created successfully",
+  "alert.register.successfully.description": "Please check your email for confirmation",
+  "alert.register.successfully.button.home": "Back to home",
+
 	"_LoginForm": "Do not edit this line",
 	"form.login.title": "Welcome back",
 	"form.login.subtitle": "We are so excited to see you again!",
@@ -26,6 +31,7 @@
 	"form.register.label.password2": "Repeat Password",
 	"form.register.button": "Create an account",
 
+  "_FormError": "Form errors",
 	"form.error.email.invalid": "Invalid email",
 	"form.error.email.required": "Email is required",
 	"form.error.displayName.required": "Display name is required",

@@ -9,14 +9,16 @@ import { useColorScheme } from "@/hooks/useColorScheme";
 import "@/locales/i18n";
 import { useTranslation } from "react-i18next";
 import { useFonts } from "expo-font";
+import { PortalHost } from "@rn-primitives/portal";
+import AuthProvider from "@/components/AuthProvider";
 
 const LIGHT_THEME: Theme = {
-	dark: false,
-	colors: NAV_THEME.light,
+  dark: false,
+  colors: NAV_THEME.light,
 };
 const DARK_THEME: Theme = {
-	dark: true,
-	colors: NAV_THEME.dark,
+  dark: true,
+  colors: NAV_THEME.dark,
 };
 
 export { ErrorBoundary } from "expo-router";
@@ -24,59 +26,64 @@ export { ErrorBoundary } from "expo-router";
 SplashScreen.preventAutoHideAsync();
 
 export default function RootLayout() {
-	const { colorScheme, setColorScheme } = useColorScheme();
-	const [isColorSchemeLoaded, setIsColorSchemeLoaded] = React.useState(false);
-	const { i18n } = useTranslation();
-	const [loaded, error] = useFonts({
-		UniSansHeavyRegular: require("@/assets/fonts/UniSansHeavyRegular.ttf"),
-	});
+  const { colorScheme, setColorScheme } = useColorScheme();
+  const [isColorSchemeLoaded, setIsColorSchemeLoaded] = React.useState(false);
+  const { i18n } = useTranslation();
+  const [loaded, error] = useFonts({
+    UniSansHeavyRegular: require("@/assets/fonts/UniSansHeavyRegular.ttf"),
+  });
 
-	React.useEffect(() => {
-		async function loadTheme() {
-			const theme = await AsyncStorage.getItem("theme");
+  React.useEffect(() => {
+    async function loadTheme() {
+      const theme = await AsyncStorage.getItem("theme");
 
-			if (!theme) {
-				AsyncStorage.setItem("theme", colorScheme);
-				setIsColorSchemeLoaded(true);
-				return;
-			}
-			const colorTheme = theme === "dark" ? "dark" : "light";
-			if (colorTheme !== colorScheme) {
-				setColorScheme(colorTheme);
+      if (!theme) {
+        AsyncStorage.setItem("theme", colorScheme);
+        setIsColorSchemeLoaded(true);
+        return;
+      }
+      const colorTheme = theme === "dark" ? "dark" : "light";
+      if (colorTheme !== colorScheme) {
+        setColorScheme(colorTheme);
 
-				setIsColorSchemeLoaded(true);
-				return;
-			}
-			setIsColorSchemeLoaded(true);
-		}
+        setIsColorSchemeLoaded(true);
+        return;
+      }
+      setIsColorSchemeLoaded(true);
+    }
 
-		async function loadFonts() {}
+    async function loadFonts() {}
 
-		(async () => {
-			await loadTheme();
-			await loadFonts();
-		})().finally(() => {
-			SplashScreen.hideAsync();
-		});
-	}, []);
+    (async () => {
+      await loadTheme();
+      await loadFonts();
+    })().finally(() => {
+      SplashScreen.hideAsync();
+    });
+  }, []);
 
-	React.useEffect(() => {
-		const loadLanguage = async () => {
-			const savedLanguage = await AsyncStorage.getItem("language");
-			if (savedLanguage) {
-				i18n.changeLanguage(savedLanguage);
-			}
-		};
-		loadLanguage();
-	}, [i18n]);
+  React.useEffect(() => {
+    const loadLanguage = async () => {
+      const savedLanguage = await AsyncStorage.getItem("language");
+      if (savedLanguage) {
+        i18n.changeLanguage(savedLanguage);
+      }
+    };
+    loadLanguage();
+  }, [i18n]);
 
-	if (!isColorSchemeLoaded) {
-		return null;
-	}
+  if (!isColorSchemeLoaded) {
+    return null;
+  }
 
-	if (!loaded && !error) {
-		return null;
-	}
+  if (!loaded && !error) {
+    return null;
+  }
 
-	return <Stack></Stack>;
+  return (
+    <AuthProvider>
+      <Stack />
+      <PortalHost />
+    </AuthProvider>
+  );
 }
