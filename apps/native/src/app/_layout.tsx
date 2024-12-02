@@ -11,6 +11,8 @@ import { useTranslation } from "react-i18next";
 import { useFonts } from "expo-font";
 import { PortalHost } from "@rn-primitives/portal";
 import AuthProvider from "@/components/AuthProvider";
+import { GestureHandlerRootView } from "react-native-gesture-handler";
+import { Toaster } from "sonner-native";
 
 const LIGHT_THEME: Theme = {
   dark: false,
@@ -82,8 +84,11 @@ export default function RootLayout() {
 
   return (
     <AuthProvider>
-      <Stack />
-      <PortalHost />
+      <GestureHandlerRootView>
+        <Stack />
+        <PortalHost />
+        <Toaster position="top-center" />
+      </GestureHandlerRootView>
     </AuthProvider>
   );
 }

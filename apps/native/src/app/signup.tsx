@@ -23,6 +23,7 @@ import {
   AlertDialogTitle,
   AlertDialogTrigger,
 } from "@/components/ui/alert-dialog";
+import { toast } from "sonner-native";
 
 const schema = Yup.object({
   email: Yup.string()
@@ -94,7 +95,7 @@ export default function SignUp() {
     });
 
     if (error) {
-      Alert.alert(error.message);
+      toast.error(error.message);
     } else {
       setRegistered(true);
     }
