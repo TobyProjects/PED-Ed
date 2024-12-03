@@ -5,6 +5,7 @@ import { BottomTabBarProps } from "@react-navigation/bottom-tabs";
 import { cn } from "@/utils/cn";
 import { useLinkBuilder } from "@react-navigation/native";
 import { PlatformPressable } from "@react-navigation/elements";
+import { SafeAreaView } from "react-native-safe-area-context";
 
 export default function TabBar({
   state,
@@ -14,7 +15,7 @@ export default function TabBar({
   const { buildHref } = useLinkBuilder();
 
   return (
-    <View className="flex-row justify-around items-center bg-background/95 border-t border-border/40">
+    <View className="absolute bottom-6 flex-row justify-between items-center bg-background/60 mx-5 py-4 rounded-full border border-border">
       {state.routes.map((route, index) => {
         const { options } = descriptors[route.key];
         const label =
@@ -48,7 +49,7 @@ export default function TabBar({
         return (
           <PlatformPressable
             key={route.name}
-            className="flex items-center justify-center py-2"
+            className="flex-1 justify-center items-center"
             href={buildHref(route.name, route.params)}
             accessibilityState={isFocused ? { selected: true } : {}}
             accessibilityLabel={options.tabBarAccessibilityLabel}
