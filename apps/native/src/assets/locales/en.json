@@ -3,6 +3,13 @@
   "welcome-text": "Welcome to",
   "slogan": "The free and effective way to learn",
 
+  "_TabItems": "Tab items",
+  "tab.home": "Home",
+  "tab.profile": "Profile",
+  "tab.flashcards": "Flashcards",
+  "tab.pomodoro": "Pomodoro",
+  "tab.gallery": "Gallery",
+
   "_AlertDialog": "Alert dialog",
   "alert.register.successfully.title": "Account created successfully",
   "alert.register.successfully.description": "Please check your email for confirmation",
