@@ -1,5 +1,5 @@
 import * as React from "react";
-import { View } from "react-native";
+import { Alert, Pressable, ScrollView, View } from "react-native";
 import { Button } from "@/components/ui/button";
 import {
   Card,
@@ -13,87 +13,89 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Text } from "@/components/ui/text";
+import { SafeAreaView } from "react-native-safe-area-context";
+import { Cog } from "@/components/icons/Cog";
+import { Pencil } from "@/components/icons/Pencil";
+import { Link, router } from "expo-router";
+import { LogOut } from "@/components/icons/LogOut";
+import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
+import { supabase } from "@/utils/supabase";
+import { toast } from "sonner-native";
 
 export default function TabsScreen() {
-  const [value, setValue] = React.useState("account");
-  
+  async function signOut() {
+    const { error } = await supabase.auth.signOut();
+
+    if (error) {
+      toast.error(error.message);
+    } else {
+      router.reload();
+    }
+  }
+
   return (
-    <View className="flex-1 justify-center p-6">
-      <Tabs
-        value={value}
-        onValueChange={setValue}
-        className="w-full max-w-[400px] mx-auto flex-col gap-1.5"
-      >
-        <TabsList className="flex-row w-full">
-          <TabsTrigger value="account" className="flex-1">
-            <Text>Account</Text>
-          </TabsTrigger>
-          <TabsTrigger value="password" className="flex-1">
-            <Text>Password</Text>
-          </TabsTrigger>
-        </TabsList>
-        <TabsContent value="account">
-          <Card>
-            <CardHeader>
-              <CardTitle>Account</CardTitle>
-              <CardDescription>
-                Make changes to your account here. Click save when you're done.
-              </CardDescription>
-            </CardHeader>
-            <CardContent className="gap-4 native:gap-2">
-              <View className="gap-1">
-                <Label nativeID="name">Name</Label>
-                <Input
-                  aria-aria-labelledby="name"
-                  defaultValue="Pedro Duarte"
-                />
-              </View>
-              <View className="gap-1">
-                <Label nativeID="username">Username</Label>
-                <Input id="username" defaultValue="@peduarte" />
-              </View>
-            </CardContent>
-            <CardFooter>
-              <Button>
-                <Text>Save changes</Text>
-              </Button>
-            </CardFooter>
-          </Card>
-        </TabsContent>
-        <TabsContent value="password">
-          <Card>
-            <CardHeader>
-              <CardTitle>Password</CardTitle>
-              <CardDescription>
-                Change your password here. After saving, you'll be logged out.
-              </CardDescription>
-            </CardHeader>
-            <CardContent className="gap-4 native:gap-2">
-              <View className="gap-1">
-                <Label nativeID="current">Current password</Label>
-                <Input
-                  placeholder="********"
-                  aria-labelledby="current"
-                  secureTextEntry
-                />
-              </View>
-              <View className="gap-1">
-                <Label nativeID="new">New password</Label>
-                <Input
-                  placeholder="********"
-                  aria-labelledby="new"
-                  secureTextEntry
-                />
-              </View>
-            </CardContent>
-            <CardFooter>
-              <Button>
-                <Text>Save password</Text>
-              </Button>
-            </CardFooter>
-          </Card>
-        </TabsContent>
-      </Tabs>
-    </View>
+    <ScrollView className="bg-background">
+      <SafeAreaView className="">
+        <View className="flex gap-8 justify-center items-center mt-24">
+          <View>
+            <Avatar alt="User Avatar" className="w-32 h-32">
+              <AvatarImage
+                source={{ uri: "https://github.com/definedentity.png" }}
+              />
+              <AvatarFallback>
+                <Text>A</Text>
+              </AvatarFallback>
+            </Avatar>
+          </View>
+          <View>
+            <Text className="text-3xl text-center font-semibold">Test</Text>
+            <Text className="text-center text-muted-foreground text-lg">
+              test
+            </Text>
+          </View>
+          <View className="flex-row justify-center items-center">
+            <Button className="w-11/12 flex-row gap-3 rounded-3xl">
+              <Text>
+                <Pencil className="text-foreground" />
+              </Text>
+              <Text className="">Edit profile</Text>
+            </Button>
+          </View>
+          <View className="w-11/12">
+            <Card className="rounded-3xl">
+              <CardHeader>
+                <CardTitle className="text-xl font-semibold">
+                  About Me
+                </CardTitle>
+              </CardHeader>
+              <CardContent>
+                <Text>
+                  Lorem ipsum dolor sit amet consectetur adipisicing elit.
+                  Molestias asperiores a voluptatem maxime vel dolorem quos,
+                  eligendi sit, veritatis neque quod laudantium ullam minus
+                  inventore quo iste, accusamus eius aliquam.
+                </Text>
+              </CardContent>
+              <CardFooter className="flex-col items-start">
+                <Text className="text-sm font-semibold">Member Since</Text>
+                <Text>June 25, 2023</Text>
+              </CardFooter>
+            </Card>
+          </View>
+          <View className="flex-row justify-center items-center">
+            <Button
+              className="flex-row gap-3 rounded-3xl w-11/12"
+              variant="destructive"
+              onPress={() => signOut()}
+            >
+              <Text>
+                <LogOut className="text-foreground" />
+              </Text>
+              <Text className="">Sign Out</Text>
+            </Button>
+          </View>
+        </View>
+      </SafeAreaView>
+    </ScrollView>
   );
 }

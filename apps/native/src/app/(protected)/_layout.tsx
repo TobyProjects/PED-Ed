@@ -1,3 +1,4 @@
+import { useAuth } from "@/components/AuthProvider";
 import { ArrowLeft } from "@/components/icons/ArrowLeft";
 import { GalleryHorizontalEnd } from "@/components/icons/GalleryHorizontalEnd";
 import { Home } from "@/components/icons/Home";
@@ -5,13 +6,14 @@ import { Timer } from "@/components/icons/Timer";
 import { User } from "@/components/icons/User";
 import { WalletCards } from "@/components/icons/WalletCards";
 import TabBar from "@/components/TabBar";
-import { Slot, Tabs, useNavigation } from "expo-router";
+import { Redirect, Slot, Tabs, useNavigation } from "expo-router";
 import React, { useEffect } from "react";
 import { useTranslation } from "react-i18next";
 
 export default function ProtectedLayout() {
   const { t } = useTranslation();
   const navigation = useNavigation();
+  const { isAuthenticated } = useAuth();
 
   useEffect(() => {
     navigation.setOptions({
@@ -21,8 +23,13 @@ export default function ProtectedLayout() {
     });
   }, [navigation]);
 
+  if (!isAuthenticated) return <Redirect href="/" />;
+
   return (
-    <Tabs screenOptions={{ headerShown: false }} tabBar={(props) => <TabBar {...props} />}>
+    <Tabs
+      screenOptions={{ headerShown: false }}
+      tabBar={(props) => <TabBar {...props} />}
+    >
       <Tabs.Screen
         name="gallery"
         options={{
