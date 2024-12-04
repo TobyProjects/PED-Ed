@@ -2,7 +2,7 @@ import "@/styles/global.css";
 
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import { Theme } from "@react-navigation/native";
-import { SplashScreen, Stack } from "expo-router";
+import { Slot, SplashScreen, Stack, useRouter, useSegments } from "expo-router";
 import * as React from "react";
 import { NAV_THEME } from "@/constants/Themes";
 import { useColorScheme } from "@/hooks/useColorScheme";
@@ -10,7 +10,7 @@ import "@/locales/i18n";
 import { useTranslation } from "react-i18next";
 import { useFonts } from "expo-font";
 import { PortalHost } from "@rn-primitives/portal";
-import AuthProvider from "@/components/AuthProvider";
+import AuthProvider, { useAuth } from "@/components/AuthProvider";
 import { GestureHandlerRootView } from "react-native-gesture-handler";
 import { Toaster } from "sonner-native";
 
@@ -56,22 +56,20 @@ export default function RootLayout() {
 
     async function loadFonts() {}
 
-    (async () => {
-      await loadTheme();
-      await loadFonts();
-    })().finally(() => {
-      SplashScreen.hideAsync();
-    });
-  }, []);
-
-  React.useEffect(() => {
-    const loadLanguage = async () => {
+    async function loadLanguage() {
       const savedLanguage = await AsyncStorage.getItem("language");
       if (savedLanguage) {
         i18n.changeLanguage(savedLanguage);
       }
-    };
-    loadLanguage();
+    }
+
+    (async () => {
+      await loadTheme();
+      await loadFonts();
+      await loadLanguage();
+    })().finally(() => {
+      SplashScreen.hideAsync();
+    });
   }, [i18n]);
 
   if (!isColorSchemeLoaded) {
@@ -82,13 +80,33 @@ export default function RootLayout() {
     return null;
   }
 
-  return (
-    <AuthProvider>
+  function InitialLayout() {
+    const { isAuthenticated } = useAuth();
+    const segments = useSegments();
+    const router = useRouter();
+
+    React.useEffect(() => {
+      const isInProtectedGroup = segments[0] === "(protected)";
+
+      if (isAuthenticated && !isInProtectedGroup) {
+        router.replace("/(protected)");
+      } else if (!isAuthenticated) {
+        router.replace("/(public)");
+      }
+    }, [isAuthenticated]);
+
+    return (
       <GestureHandlerRootView>
-        <Stack />
+        <Slot />
         <PortalHost />
         <Toaster position="top-center" />
       </GestureHandlerRootView>
+    );
+  }
+
+  return (
+    <AuthProvider>
+      <InitialLayout />
     </AuthProvider>
   );
 }

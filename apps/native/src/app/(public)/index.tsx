@@ -1,29 +1,24 @@
-import { Image, ImageBackground, View } from "react-native";
+import { View, ImageBackground, Image } from "react-native";
+import React, { useEffect } from "react";
 import { SafeAreaView } from "react-native-safe-area-context";
 import { Text } from "@/components/ui/text";
 import { Button } from "@/components/ui/button";
 
 import bg1 from "@/assets/images/backgrounds/bg1.png";
 import logo from "@/assets/images/llvm.png";
-import { Redirect, router, useNavigation } from "expo-router";
-import { useEffect } from "react";
 import { useTranslation } from "react-i18next";
-import { useAuth } from "@/components/AuthProvider";
+import { useNavigation, useRouter } from "expo-router";
 
-export default function HomePage() {
-  const navigation = useNavigation();
+export default function WelcomeScreen() {
   const { t } = useTranslation();
-  const { isAuthenticated } = useAuth();
+  const router = useRouter();
+  const navigation = useNavigation();
 
   useEffect(() => {
     navigation.setOptions({
       headerShown: false,
     });
   }, [navigation]);
-
-  if (isAuthenticated) {
-    return <Redirect href="/(protected)" />;
-  }
 
   return (
     <View className="flex-1">
@@ -50,13 +45,13 @@ export default function HomePage() {
           <View className="w-full mb-8 flex gap-3">
             <Button
               className="w-full bg-white rounded-full"
-              onPress={() => router.push("/signup")}
+              onPress={() => router.push("/(public)/signup")}
             >
               <Text className="text-gray-900">{t("form.register.button")}</Text>
             </Button>
             <Button
               className="w-full bg-primary rounded-full"
-              onPress={() => router.push("/signin")}
+              onPress={() => router.push("/(public)/signin")}
             >
               <Text className="text-white">{t("form.login.button")}</Text>
             </Button>

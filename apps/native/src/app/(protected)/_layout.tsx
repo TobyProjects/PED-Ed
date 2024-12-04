@@ -23,8 +23,6 @@ export default function ProtectedLayout() {
     });
   }, [navigation]);
 
-  if (!isAuthenticated) return <Redirect href="/" />;
-
   return (
     <Tabs
       screenOptions={{ headerShown: false }}
@@ -39,6 +37,7 @@ export default function ProtectedLayout() {
           ),
           tabBarLabelPosition: "below-icon",
         }}
+        redirect={!isAuthenticated}
       />
       <Tabs.Screen
         name="flashcards"
@@ -47,6 +46,7 @@ export default function ProtectedLayout() {
           tabBarIcon: () => <WalletCards className="text-foreground" />,
           tabBarLabelPosition: "below-icon",
         }}
+        redirect={!isAuthenticated}
       />
       <Tabs.Screen
         name="index"
@@ -55,6 +55,7 @@ export default function ProtectedLayout() {
           tabBarIcon: () => <Home className="text-foreground" />,
           tabBarLabelPosition: "below-icon",
         }}
+        redirect={!isAuthenticated}
       />
       <Tabs.Screen
         name="pomodoro"
@@ -63,6 +64,7 @@ export default function ProtectedLayout() {
           tabBarIcon: () => <Timer className="text-foreground" />,
           tabBarLabelPosition: "below-icon",
         }}
+        redirect={!isAuthenticated}
       />
       <Tabs.Screen
         name="profile"
@@ -71,6 +73,7 @@ export default function ProtectedLayout() {
           tabBarIcon: () => <User className="text-foreground" />,
           tabBarLabelPosition: "below-icon",
         }}
+        redirect={!isAuthenticated}
       />
     </Tabs>
   );
