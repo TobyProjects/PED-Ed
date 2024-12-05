@@ -36,6 +36,14 @@ export default function TabsScreen() {
   return (
     <ScrollView className="bg-background">
       <SafeAreaView className="">
+        <View className="flex items-end">
+          <Pressable
+            className="p-3"
+            onPress={() => router.push("/(protected)/(settings)")}
+          >
+            <Cog className="text-primary" />
+          </Pressable>
+        </View>
         <View className="flex gap-8 justify-center items-center mt-24">
           <View>
             <Avatar alt="User Avatar" className="w-32 h-32">

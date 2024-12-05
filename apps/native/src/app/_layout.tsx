@@ -89,7 +89,7 @@ export default function RootLayout() {
       const isInProtectedGroup = segments[0] === "(protected)";
 
       if (isAuthenticated && !isInProtectedGroup) {
-        router.replace("/(protected)");
+        router.replace("/(protected)/(home)");
       } else if (!isAuthenticated) {
         router.replace("/(public)");
       }
