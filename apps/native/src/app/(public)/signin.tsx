@@ -21,6 +21,11 @@ import { yupResolver } from "@hookform/resolvers/yup";
 import { supabase } from "@/utils/supabase";
 import { toast } from "sonner-native";
 
+const initialValues = {
+  email: "",
+  password: "",
+};
+
 const schema = Yup.object({
   email: Yup.string()
     .email("form.error.email.invalid")
@@ -31,13 +36,14 @@ const schema = Yup.object({
 export default function SignIn() {
   const { t } = useTranslation();
   const navigation = useNavigation();
-  const router = useRouter()
+  const router = useRouter();
   const {
     control,
     handleSubmit,
     formState: { errors },
   } = useForm({
     resolver: yupResolver(schema),
+    defaultValues: initialValues,
   });
   const [isLoading, setLoading] = useState<boolean>(false);
 
@@ -58,19 +64,18 @@ export default function SignIn() {
     Keyboard.dismiss();
   }
 
-  async function onSubmit(data: any) {
+  async function onSubmit({ email, password }: typeof initialValues) {
     setLoading(true);
-    const {
-      data: { session },
-      error,
-    } = await supabase.auth.signInWithPassword({
-      email: data.email,
-      password: data.password,
+
+    const { data, error } = await supabase.auth.signInWithPassword({
+      email: email,
+      password: password,
     });
 
     if (error) {
       toast.error(error.message);
     } else {
+      toast.success(t("form.login.message.login.successfully"));
       navigation.goBack();
     }
 

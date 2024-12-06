@@ -6,6 +6,7 @@ import { ArrowLeft } from "@/components/icons/ArrowLeft";
 import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
 import { Label } from "@/components/ui/label";
 import { useColorScheme } from "@/hooks/useColorScheme";
+import { Button } from "@/components/ui/button";
 
 type ColorScheme = "light" | "dark";
 
@@ -13,16 +14,11 @@ export default function Appearance() {
   const navigation = useNavigation();
   const router = useRouter();
   const { t } = useTranslation();
-  const { setColorScheme, colorScheme } = useColorScheme();
+  const { toggleColorScheme } = useColorScheme();
 
-  const [theme, setTheme] = React.useState<ColorScheme>(colorScheme);
-
-  function onLabelPress(scheme: ColorScheme) {
-    return () => {
-      setTheme(scheme);
-      setColorScheme(scheme);
-      console.log(scheme);
-    };
+  function toggleDarkMode() {
+    toggleColorScheme();
+    console.log("Done");
   }
 
   useEffect(() => {
@@ -46,34 +42,10 @@ export default function Appearance() {
 
   return (
     <ScrollView className="bg-background">
-      <Text>Appearance</Text>
-      <RadioGroup value={theme} onValueChange={setTheme} className="gap-3">
-        <RadioGroupItemWithLabel
-          value="Light"
-          onLabelPress={onLabelPress("light")}
-        />
-        <RadioGroupItemWithLabel
-          value="Dark"
-          onLabelPress={onLabelPress("dark")}
-        />
-      </RadioGroup>
+      <Text className="text-foreground">Dark mode</Text>
+      <Button onPress={() => toggleDarkMode()}>
+        <Text>On/Off</Text>
+      </Button>
     </ScrollView>
-  );
-}
-
-function RadioGroupItemWithLabel({
-  value,
-  onLabelPress,
-}: {
-  value: string;
-  onLabelPress: () => void;
-}) {
-  return (
-    <View className={"flex-row gap-2 items-center"}>
-      <RadioGroupItem aria-labelledby={`label-for-${value}`} value={value} />
-      <Label nativeID={`label-for-${value}`} onPress={onLabelPress}>
-        {value}
-      </Label>
-    </View>
   );
 }

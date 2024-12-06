@@ -25,6 +25,13 @@ import {
 } from "@/components/ui/alert-dialog";
 import { toast } from "sonner-native";
 
+type FormValues = {
+  email: string;
+  displayName: string;
+  username: string;
+  password: string;
+};
+
 const schema = Yup.object({
   email: Yup.string()
     .email("form.error.email.invalid")
@@ -57,7 +64,6 @@ export default function SignUp() {
   } = useForm({
     resolver: yupResolver(schema),
   });
-  const [isRegistered, setRegistered] = useState<boolean>(false);
   const [isLoading, setLoading] = useState<boolean>(false);
 
   useEffect(() => {
@@ -77,19 +83,21 @@ export default function SignUp() {
     Keyboard.dismiss();
   }
 
-  async function onSubmit(data: any) {
+  async function onSubmit({
+    email,
+    password,
+    username,
+    displayName,
+  }: FormValues) {
     setLoading(true);
 
-    const {
-      data: { session },
-      error,
-    } = await supabase.auth.signUp({
-      email: data.email,
-      password: data.password,
+    const { data, error } = await supabase.auth.signUp({
+      email: email,
+      password: password,
       options: {
         data: {
-          username: data.username,
-          displayName: data.displayName,
+          username: username,
+          displayName: displayName,
         },
       },
     });
@@ -97,178 +105,156 @@ export default function SignUp() {
     if (error) {
       toast.error(error.message);
     } else {
-      setRegistered(true);
+      toast.success(t("form.register.message.register.successfully"));
     }
 
     setLoading(false);
   }
 
   return (
-    <>
-      <AlertDialog open={isRegistered}>
-        <AlertDialogContent>
-          <AlertDialogHeader>
-            <AlertDialogTitle>
-              {t("alert.register.successfully.title")}
-            </AlertDialogTitle>
-            <AlertDialogDescription>
-              {t("alert.register.successfully.description")}
-            </AlertDialogDescription>
-          </AlertDialogHeader>
-          <AlertDialogFooter>
-            <AlertDialogAction onPress={() => navigation.goBack()}>
-              <Text>{t("alert.register.successfully.button.home")}</Text>
-            </AlertDialogAction>
-          </AlertDialogFooter>
-        </AlertDialogContent>
-      </AlertDialog>
-      <TouchableWithoutFeedback onPress={dismissKeyboard}>
-        <View className="bg-background h-screen">
-          <SafeAreaView className="my-12">
-            <View className="w-11/12 mx-auto">
-              <Text className="text-foreground text-center font-bold text-5xl font-uniSansHeavy">
-                {t("form.register.title")}
-              </Text>
-              <View className="mt-12">
-                <View className="flex gap-3">
-                  <View>
-                    <Label nativeID="email" className="font-bold">
-                      {t("form.register.label.email")}
-                    </Label>
-                    <Controller
-                      control={control}
-                      name="email"
-                      render={({ field: { onChange, onBlur, value } }) => (
-                        <Input
-                          placeholder={t("form.register.label.email")}
-                          inputMode="email"
-                          aria-labelledby="email"
-                          onChangeText={onChange}
-                          onBlur={onBlur}
-                          value={value}
-                        />
-                      )}
-                    />
-                    {errors && errors["email"] && (
-                      <Label className="text-destructive" nativeID="email">
-                        {t(errors["email"].message!!)}
-                      </Label>
+    <TouchableWithoutFeedback onPress={dismissKeyboard}>
+      <View className="bg-background h-screen">
+        <SafeAreaView className="my-12">
+          <View className="w-11/12 mx-auto">
+            <Text className="text-foreground text-center font-bold text-5xl font-uniSansHeavy">
+              {t("form.register.title")}
+            </Text>
+            <View className="mt-12">
+              <View className="flex gap-3">
+                <View>
+                  <Label nativeID="email" className="font-bold">
+                    {t("form.register.label.email")}
+                  </Label>
+                  <Controller
+                    control={control}
+                    name="email"
+                    render={({ field: { onChange, onBlur, value } }) => (
+                      <Input
+                        placeholder={t("form.register.label.email")}
+                        inputMode="email"
+                        aria-labelledby="email"
+                        onChangeText={onChange}
+                        onBlur={onBlur}
+                        value={value}
+                      />
                     )}
-                  </View>
-                  <View>
-                    <Label nativeID="displayName" className="font-bold">
-                      {t("form.register.label.displayName")}
+                  />
+                  {errors && errors["email"] && (
+                    <Label className="text-destructive" nativeID="email">
+                      {t(errors["email"].message!!)}
                     </Label>
-                    <Controller
-                      control={control}
-                      name="displayName"
-                      render={({ field: { onChange, onBlur, value } }) => (
-                        <Input
-                          placeholder={t("form.register.label.displayName.tip")}
-                          inputMode="text"
-                          aria-labelledby="displayName"
-                          onChangeText={onChange}
-                          onBlur={onBlur}
-                          value={value}
-                        />
-                      )}
-                    />
-                    {errors && errors["displayName"] && (
-                      <Label
-                        className="text-destructive"
-                        nativeID="displayName"
-                      >
-                        {t(errors["displayName"].message!!)}
-                      </Label>
-                    )}
-                  </View>
-                  <View>
-                    <Label nativeID="username">
-                      {t("form.register.label.username")}
-                    </Label>
-                    <Controller
-                      control={control}
-                      name="username"
-                      render={({ field: { onChange, onBlur, value } }) => (
-                        <Input
-                          placeholder={t("form.register.placeholder.username")}
-                          inputMode="text"
-                          aria-labelledby="username"
-                          onChangeText={onChange}
-                          onBlur={onBlur}
-                          value={value}
-                        />
-                      )}
-                    />
-                    {errors && errors["username"] && (
-                      <Label className="text-destructive" nativeID="username">
-                        {t(errors["username"].message!!)}
-                      </Label>
-                    )}
-                  </View>
-                  <View>
-                    <Label nativeID="password" className="font-bold">
-                      {t("form.register.label.password")}
-                    </Label>
-                    <Controller
-                      control={control}
-                      name="password"
-                      render={({ field: { onChange, onBlur, value } }) => (
-                        <Input
-                          placeholder={t("form.register.placeholder.password")}
-                          inputMode="text"
-                          aria-labelledby="password"
-                          onChangeText={onChange}
-                          secureTextEntry={true}
-                          onBlur={onBlur}
-                          value={value}
-                        />
-                      )}
-                    />
-                    {errors && errors["password"] && (
-                      <Label className="text-destructive" nativeID="password">
-                        {t(errors["password"].message!!)}
-                      </Label>
-                    )}
-                  </View>
-                  <View>
-                    <Label nativeID="password2" className="font-bold">
-                      {t("form.register.label.password2")}
-                    </Label>
-                    <Controller
-                      control={control}
-                      name="password2"
-                      render={({ field: { onChange, onBlur, value } }) => (
-                        <Input
-                          inputMode="text"
-                          aria-labelledby="password2"
-                          onChangeText={onChange}
-                          secureTextEntry={true}
-                          onBlur={onBlur}
-                          value={value}
-                        />
-                      )}
-                    />
-                    {errors && errors["password2"] && (
-                      <Label className="text-destructive" nativeID="password2">
-                        {t(errors["password2"].message!!)}
-                      </Label>
-                    )}
-                  </View>
-
-                  <Button
-                    className="text-foreground"
-                    onPress={handleSubmit(onSubmit)}
-                    disabled={isLoading}
-                  >
-                    <Text>{t("form.register.button")}</Text>
-                  </Button>
+                  )}
                 </View>
+                <View>
+                  <Label nativeID="displayName" className="font-bold">
+                    {t("form.register.label.displayName")}
+                  </Label>
+                  <Controller
+                    control={control}
+                    name="displayName"
+                    render={({ field: { onChange, onBlur, value } }) => (
+                      <Input
+                        placeholder={t("form.register.label.displayName.tip")}
+                        inputMode="text"
+                        aria-labelledby="displayName"
+                        onChangeText={onChange}
+                        onBlur={onBlur}
+                        value={value}
+                      />
+                    )}
+                  />
+                  {errors && errors["displayName"] && (
+                    <Label className="text-destructive" nativeID="displayName">
+                      {t(errors["displayName"].message!!)}
+                    </Label>
+                  )}
+                </View>
+                <View>
+                  <Label nativeID="username">
+                    {t("form.register.label.username")}
+                  </Label>
+                  <Controller
+                    control={control}
+                    name="username"
+                    render={({ field: { onChange, onBlur, value } }) => (
+                      <Input
+                        placeholder={t("form.register.placeholder.username")}
+                        inputMode="text"
+                        aria-labelledby="username"
+                        onChangeText={onChange}
+                        onBlur={onBlur}
+                        value={value}
+                      />
+                    )}
+                  />
+                  {errors && errors["username"] && (
+                    <Label className="text-destructive" nativeID="username">
+                      {t(errors["username"].message!!)}
+                    </Label>
+                  )}
+                </View>
+                <View>
+                  <Label nativeID="password" className="font-bold">
+                    {t("form.register.label.password")}
+                  </Label>
+                  <Controller
+                    control={control}
+                    name="password"
+                    render={({ field: { onChange, onBlur, value } }) => (
+                      <Input
+                        placeholder={t("form.register.placeholder.password")}
+                        inputMode="text"
+                        aria-labelledby="password"
+                        onChangeText={onChange}
+                        secureTextEntry={true}
+                        onBlur={onBlur}
+                        value={value}
+                      />
+                    )}
+                  />
+                  {errors && errors["password"] && (
+                    <Label className="text-destructive" nativeID="password">
+                      {t(errors["password"].message!!)}
+                    </Label>
+                  )}
+                </View>
+                <View>
+                  <Label nativeID="password2" className="font-bold">
+                    {t("form.register.label.password2")}
+                  </Label>
+                  <Controller
+                    control={control}
+                    name="password2"
+                    render={({ field: { onChange, onBlur, value } }) => (
+                      <Input
+                        inputMode="text"
+                        aria-labelledby="password2"
+                        onChangeText={onChange}
+                        secureTextEntry={true}
+                        onBlur={onBlur}
+                        value={value}
+                      />
+                    )}
+                  />
+                  {errors && errors["password2"] && (
+                    <Label className="text-destructive" nativeID="password2">
+                      {t(errors["password2"].message!!)}
+                    </Label>
+                  )}
+                </View>
+
+                <Button
+                  className="text-foreground"
+                  onPress={handleSubmit(onSubmit)}
+                  disabled={isLoading}
+                >
+                  <Text>{t("form.register.button")}</Text>
+                </Button>
               </View>
             </View>
-          </SafeAreaView>
-        </View>
-      </TouchableWithoutFeedback>
-    </>
+          </View>
+        </SafeAreaView>
+      </View>
+    </TouchableWithoutFeedback>
   );
 }

@@ -33,6 +33,7 @@
   "form.login.button": "Log In",
   "form.login.label.emailRequired": "Email is required",
   "form.login.label.passwordRequired": "Password is required",
+  "form.login.message.login.successfully": "Signed in successfully",
 
   "_RegisterForm": "Do not edit this line",
   "form.register.title": "Create an account",
@@ -45,6 +46,7 @@
   "form.register.label.password": "Password",
   "form.register.label.password2": "Repeat Password",
   "form.register.button": "Create an account",
+  "form.register.message.register.successfully": "We sent an verify link to your email.",
 
   "_FormError": "Form errors",
   "form.error.email.invalid": "Invalid email",

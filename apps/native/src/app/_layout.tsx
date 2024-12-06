@@ -2,7 +2,7 @@ import "@/styles/global.css";
 
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import { Theme } from "@react-navigation/native";
-import { Slot, SplashScreen, Stack, useRouter, useSegments } from "expo-router";
+import { Slot, SplashScreen, useRouter, useSegments } from "expo-router";
 import * as React from "react";
 import { NAV_THEME } from "@/constants/Themes";
 import { useColorScheme } from "@/hooks/useColorScheme";
