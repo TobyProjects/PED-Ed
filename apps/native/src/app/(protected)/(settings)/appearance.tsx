@@ -3,10 +3,11 @@ import React, { useEffect } from "react";
 import { useNavigation, useRouter } from "expo-router";
 import { useTranslation } from "react-i18next";
 import { ArrowLeft } from "@/components/icons/ArrowLeft";
-import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
-import { Label } from "@/components/ui/label";
 import { useColorScheme } from "@/hooks/useColorScheme";
 import { Button } from "@/components/ui/button";
+import AsyncStorage from "@react-native-async-storage/async-storage";
+import { SunMoon } from "@/components/icons/SunMoon";
+import HeaderWithGoBack from "@/components/HeaderWithGoBack";
 
 type ColorScheme = "light" | "dark";
 
@@ -14,38 +15,40 @@ export default function Appearance() {
   const navigation = useNavigation();
   const router = useRouter();
   const { t } = useTranslation();
-  const { toggleColorScheme } = useColorScheme();
+  const { toggleColorScheme, colorScheme } = useColorScheme();
 
   function toggleDarkMode() {
+    AsyncStorage.setItem("theme", colorScheme === "dark" ? "light" : "dark");
     toggleColorScheme();
-    console.log("Done");
   }
 
   useEffect(() => {
     navigation.setOptions({
-      headerTitle: () => (
-        <Text className="text-foreground text-xl font-semibold">
-          {t("page.settings.appearance.title")}
-        </Text>
-      ),
-      headerLeft: () => (
-        <ArrowLeft
-          onPress={() => router.replace("/(protected)/(home)/profile")}
-          className="text-foreground"
+      header: () => (
+        <HeaderWithGoBack
+          icon={<ArrowLeft className="text-foreground" />}
+          title={t("Appearance")}
         />
       ),
-      headerStyle: {
-        backgroundColor: "transparent",
-      },
     });
   }, [navigation]);
 
   return (
     <ScrollView className="bg-background">
-      <Text className="text-foreground">Dark mode</Text>
-      <Button onPress={() => toggleDarkMode()}>
-        <Text>On/Off</Text>
-      </Button>
+      <View className="w-11/12 mx-auto mt-6">
+        <Text className="text-foreground text-lg font-semibold">Dark mode</Text>
+        <Button
+          onPress={() => toggleDarkMode()}
+          className="flex flex-row gap-1"
+        >
+          <Text>
+            <SunMoon className="text-foreground" />
+          </Text>
+          <Text className="text-foreground">
+            Change to {colorScheme == "dark" ? "light mode" : "dark mode"}
+          </Text>
+        </Button>
+      </View>
     </ScrollView>
   );
 }

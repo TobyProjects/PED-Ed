@@ -15,7 +15,7 @@ export default function TabBar({
   const { buildHref } = useLinkBuilder();
 
   return (
-    <View className="absolute bottom-6 flex-row justify-between items-center bg-background/60 mx-5 py-4 rounded-full border border-border">
+    <View className="absolute bottom-6 flex-row justify-between items-center bg-background mx-5 py-4 rounded-full border border-border">
       {state.routes.map((route, index) => {
         const { options } = descriptors[route.key];
         const label =

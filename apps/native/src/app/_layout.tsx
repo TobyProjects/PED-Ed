@@ -40,11 +40,13 @@ export default function RootLayout() {
       const theme = await AsyncStorage.getItem("theme");
 
       if (!theme) {
-        AsyncStorage.setItem("theme", colorScheme);
+        await AsyncStorage.setItem("theme", colorScheme);
         setIsColorSchemeLoaded(true);
         return;
       }
+
       const colorTheme = theme === "dark" ? "dark" : "light";
+      
       if (colorTheme !== colorScheme) {
         setColorScheme(colorTheme);
 
@@ -59,7 +61,7 @@ export default function RootLayout() {
     async function loadLanguage() {
       const savedLanguage = await AsyncStorage.getItem("language");
       if (savedLanguage) {
-        i18n.changeLanguage(savedLanguage);
+        await i18n.changeLanguage(savedLanguage);
       }
     }
 

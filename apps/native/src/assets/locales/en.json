@@ -47,6 +47,7 @@
   "form.register.label.password2": "Repeat Password",
   "form.register.button": "Create an account",
   "form.register.message.register.successfully": "We sent an verify link to your email.",
+  "page.settings.appearance.title": "Appearance",
 
   "_FormError": "Form errors",
   "form.error.email.invalid": "Invalid email",
