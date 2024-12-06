@@ -10,9 +10,10 @@ import "@/locales/i18n";
 import { useTranslation } from "react-i18next";
 import { useFonts } from "expo-font";
 import { PortalHost } from "@rn-primitives/portal";
-import AuthProvider, { useAuth } from "@/components/AuthProvider";
 import { GestureHandlerRootView } from "react-native-gesture-handler";
 import { Toaster } from "sonner-native";
+import { ClerkLoaded, ClerkProvider, useAuth } from "@clerk/clerk-expo";
+import { tokenCache } from "@/utils/cache";
 
 const LIGHT_THEME: Theme = {
   dark: false,
@@ -26,6 +27,14 @@ const DARK_THEME: Theme = {
 export { ErrorBoundary } from "expo-router";
 
 SplashScreen.preventAutoHideAsync();
+
+const clerkPublishableKey = process.env.EXPO_PUBLIC_CLERK_PUBLISHABLE_KEY!
+
+if (!clerkPublishableKey) {
+  throw new Error(
+    'Missing Publishable Key. Please set EXPO_PUBLIC_CLERK_PUBLISHABLE_KEY in your .env',
+  )
+}
 
 export default function RootLayout() {
   const { colorScheme, setColorScheme } = useColorScheme();
@@ -46,7 +55,7 @@ export default function RootLayout() {
       }
 
       const colorTheme = theme === "dark" ? "dark" : "light";
-      
+
       if (colorTheme !== colorScheme) {
         setColorScheme(colorTheme);
 
@@ -83,19 +92,19 @@ export default function RootLayout() {
   }
 
   function InitialLayout() {
-    const { isAuthenticated } = useAuth();
+    const { isSignedIn } = useAuth();
     const segments = useSegments();
     const router = useRouter();
 
     React.useEffect(() => {
       const isInProtectedGroup = segments[0] === "(protected)";
 
-      if (isAuthenticated && !isInProtectedGroup) {
+      if (isSignedIn && !isInProtectedGroup) {
         router.replace("/(protected)/(home)");
-      } else if (!isAuthenticated) {
+      } else if (!isSignedIn) {
         router.replace("/(public)");
       }
-    }, [isAuthenticated]);
+    }, [isSignedIn]);
 
     return (
       <GestureHandlerRootView>
@@ -107,8 +116,10 @@ export default function RootLayout() {
   }
 
   return (
-    <AuthProvider>
-      <InitialLayout />
-    </AuthProvider>
+    <ClerkProvider publishableKey={clerkPublishableKey} tokenCache={tokenCache}>
+      <ClerkLoaded>
+        <InitialLayout />
+      </ClerkLoaded>
+    </ClerkProvider>
   );
 }

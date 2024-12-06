@@ -11,7 +11,6 @@ import { Keyboard, TouchableWithoutFeedback, View } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
 import * as Yup from "yup";
 import { Input } from "@/components/ui/input";
-import { supabase } from "@/utils/supabase";
 import { toast } from "sonner-native";
 import { Home } from "@/components/icons/Home";
 
@@ -51,13 +50,7 @@ export default function ForgotPassword() {
     setDisabled(true);
     setSecondsLeft(30);
 
-    const { error } = await supabase.auth.resetPasswordForEmail(email);
-
-    if (error) {
-      toast.error(error.message);
-    } else {
-      toast.success(t("form.resetpassword.emailSent"));
-    }
+   
 
     const interval = setInterval(() => {
       setSecondsLeft((prev) => {

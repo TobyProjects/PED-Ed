@@ -9,28 +9,20 @@ import {
   CardHeader,
   CardTitle,
 } from "@/components/ui/card";
-import { Input } from "@/components/ui/input";
-import { Label } from "@/components/ui/label";
-import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Text } from "@/components/ui/text";
 import { SafeAreaView } from "react-native-safe-area-context";
 import { Cog } from "@/components/icons/Cog";
 import { Pencil } from "@/components/icons/Pencil";
-import { Link, router } from "expo-router";
+import { router } from "expo-router";
 import { LogOut } from "@/components/icons/LogOut";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
-import { supabase } from "@/utils/supabase";
-import { toast } from "sonner-native";
+import { useAuth } from "@clerk/clerk-expo";
 
 export default function TabsScreen() {
-  async function signOut() {
-    const { error } = await supabase.auth.signOut();
+  const { signOut } = useAuth();
 
-    if (error) {
-      toast.error(error.message);
-    } else {
-      router.reload();
-    }
+  async function onSignOut() {
+    await signOut();
   }
 
   return (
@@ -94,7 +86,7 @@ export default function TabsScreen() {
             <Button
               className="flex-row gap-3 rounded-3xl w-11/12"
               variant="destructive"
-              onPress={() => signOut()}
+              onPress={() => onSignOut()}
             >
               <Text>
                 <LogOut className="text-foreground" />

@@ -3,31 +3,21 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Text } from "@/components/ui/text";
-import { useNavigation } from "expo-router";
-import React, { useEffect, useRef, useState } from "react";
+import { useNavigation, useRouter } from "expo-router";
+import React, { useEffect, useState } from "react";
 import { Controller, useForm } from "react-hook-form";
-import { Alert, Keyboard, TouchableWithoutFeedback, View } from "react-native";
+import { Keyboard, TouchableWithoutFeedback, View } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
 import * as Yup from "yup";
 import { yupResolver } from "@hookform/resolvers/yup";
 import { useTranslation } from "react-i18next";
-import { supabase } from "@/utils/supabase";
-import {
-  AlertDialog,
-  AlertDialogAction,
-  AlertDialogCancel,
-  AlertDialogContent,
-  AlertDialogDescription,
-  AlertDialogFooter,
-  AlertDialogHeader,
-  AlertDialogTitle,
-  AlertDialogTrigger,
-} from "@/components/ui/alert-dialog";
+import { useAuth, useSignUp } from "@clerk/clerk-expo";
 import { toast } from "sonner-native";
 
 type FormValues = {
   email: string;
-  displayName: string;
+  firstName: string;
+  lastName: string;
   username: string;
   password: string;
 };
@@ -36,14 +26,12 @@ const schema = Yup.object({
   email: Yup.string()
     .email("form.error.email.invalid")
     .required("form.error.email.required"),
-  displayName: Yup.string()
-    .required("form.error.displayName.required")
-    .min(5, "form.error.displayName.tooShort")
-    .max(20, "form.error.displayName.tooLong"),
   username: Yup.string()
     .required("form.error.username.required")
     .min(5, "form.error.username.tooShort")
     .max(20, "form.error.username.tooLong"),
+  firstName: Yup.string().required("form.error.firstName.required"),
+  lastName: Yup.string().required("form.error.lastName.required"),
   password: Yup.string()
     .required("form.error.password.required")
     .min(8, "form.error.password.tooShort")
@@ -65,6 +53,8 @@ export default function SignUp() {
     resolver: yupResolver(schema),
   });
   const [isLoading, setLoading] = useState<boolean>(false);
+  const { isLoaded, signUp } = useSignUp();
+  const router = useRouter();
 
   useEffect(() => {
     navigation.setOptions({
@@ -79,40 +69,38 @@ export default function SignUp() {
     });
   }, [navigation]);
 
-  function dismissKeyboard() {
-    Keyboard.dismiss();
-  }
-
   async function onSubmit({
     email,
     password,
     username,
-    displayName,
+    firstName,
+    lastName,
   }: FormValues) {
     setLoading(true);
 
-    const { data, error } = await supabase.auth.signUp({
-      email: email,
-      password: password,
-      options: {
-        data: {
-          username: username,
-          displayName: displayName,
-        },
-      },
-    });
+    if (!isLoaded) return;
 
-    if (error) {
-      toast.error(error.message);
-    } else {
-      toast.success(t("form.register.message.register.successfully"));
+    try {
+      await signUp.create({
+        emailAddress: email,
+        password: password,
+        username: username,
+        firstName: firstName,
+        lastName: lastName,
+      });
+
+      await signUp.prepareEmailAddressVerification({ strategy: "email_code" });
+
+      router.replace("/(public)/verify-email");
+    } catch (e: any) {
+      toast.error(e.message);
     }
 
     setLoading(false);
   }
 
   return (
-    <TouchableWithoutFeedback onPress={dismissKeyboard}>
+    <TouchableWithoutFeedback onPress={() => Keyboard.dismiss()}>
       <View className="bg-background h-screen">
         <SafeAreaView className="my-12">
           <View className="w-11/12 mx-auto">
@@ -146,26 +134,50 @@ export default function SignUp() {
                   )}
                 </View>
                 <View>
-                  <Label nativeID="displayName" className="font-bold">
-                    {t("form.register.label.displayName")}
+                  <Label nativeID="firstName" className="font-bold">
+                    {t("form.register.label.firstName")}
                   </Label>
                   <Controller
                     control={control}
-                    name="displayName"
+                    name="firstName"
                     render={({ field: { onChange, onBlur, value } }) => (
                       <Input
-                        placeholder={t("form.register.label.displayName.tip")}
+                        placeholder={t("form.register.label.firstName.tip")}
                         inputMode="text"
-                        aria-labelledby="displayName"
+                        aria-labelledby="firstName"
                         onChangeText={onChange}
                         onBlur={onBlur}
                         value={value}
                       />
                     )}
                   />
-                  {errors && errors["displayName"] && (
-                    <Label className="text-destructive" nativeID="displayName">
-                      {t(errors["displayName"].message!!)}
+                  {errors && errors["firstName"] && (
+                    <Label className="text-destructive" nativeID="firstName">
+                      {t(errors["firstName"].message!!)}
+                    </Label>
+                  )}
+                </View>
+                <View>
+                  <Label nativeID="lastName" className="font-bold">
+                    {t("form.register.label.lastName")}
+                  </Label>
+                  <Controller
+                    control={control}
+                    name="lastName"
+                    render={({ field: { onChange, onBlur, value } }) => (
+                      <Input
+                        placeholder={t("form.register.label.lastName.tip")}
+                        inputMode="text"
+                        aria-labelledby="lastName"
+                        onChangeText={onChange}
+                        onBlur={onBlur}
+                        value={value}
+                      />
+                    )}
+                  />
+                  {errors && errors["lastName"] && (
+                    <Label className="text-destructive" nativeID="lastName">
+                      {t(errors["lastName"].message!!)}
                     </Label>
                   )}
                 </View>

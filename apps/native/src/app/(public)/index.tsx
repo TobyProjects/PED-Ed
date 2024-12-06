@@ -45,13 +45,13 @@ export default function WelcomeScreen() {
           <View className="w-full mb-8 flex gap-3">
             <Button
               className="w-full bg-white rounded-full"
-              onPress={() => router.push("/(public)/signup")}
+              onPress={() => router.push("/(public)/sign-up")}
             >
               <Text className="text-gray-900">{t("form.register.button")}</Text>
             </Button>
             <Button
               className="w-full bg-primary rounded-full"
-              onPress={() => router.push("/(public)/signin")}
+              onPress={() => router.push("/(public)/sign-in")}
             >
               <Text className="text-white">{t("form.login.button")}</Text>
             </Button>

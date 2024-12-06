@@ -1,19 +1,18 @@
-import { useAuth } from "@/components/AuthProvider";
-import { ArrowLeft } from "@/components/icons/ArrowLeft";
 import { GalleryHorizontalEnd } from "@/components/icons/GalleryHorizontalEnd";
 import { Home } from "@/components/icons/Home";
 import { Timer } from "@/components/icons/Timer";
 import { User } from "@/components/icons/User";
 import { WalletCards } from "@/components/icons/WalletCards";
 import TabBar from "@/components/TabBar";
-import { Redirect, Slot, Tabs, useNavigation } from "expo-router";
+import { useAuth } from "@clerk/clerk-expo";
+import { Tabs, useNavigation } from "expo-router";
 import React, { useEffect } from "react";
 import { useTranslation } from "react-i18next";
 
 export default function ProtectedLayout() {
   const { t } = useTranslation();
   const navigation = useNavigation();
-  const { isAuthenticated } = useAuth();
+  const { isSignedIn } = useAuth();
 
   useEffect(() => {
     navigation.setOptions({
@@ -37,7 +36,7 @@ export default function ProtectedLayout() {
           ),
           tabBarLabelPosition: "below-icon",
         }}
-        redirect={!isAuthenticated}
+        redirect={!isSignedIn}
       />
       <Tabs.Screen
         name="flashcards"
@@ -46,7 +45,7 @@ export default function ProtectedLayout() {
           tabBarIcon: () => <WalletCards className="text-foreground" />,
           tabBarLabelPosition: "below-icon",
         }}
-        redirect={!isAuthenticated}
+        redirect={!isSignedIn}
       />
       <Tabs.Screen
         name="index"
@@ -55,7 +54,7 @@ export default function ProtectedLayout() {
           tabBarIcon: () => <Home className="text-foreground" />,
           tabBarLabelPosition: "below-icon",
         }}
-        redirect={!isAuthenticated}
+        redirect={!isSignedIn}
       />
       <Tabs.Screen
         name="pomodoro"
@@ -64,7 +63,7 @@ export default function ProtectedLayout() {
           tabBarIcon: () => <Timer className="text-foreground" />,
           tabBarLabelPosition: "below-icon",
         }}
-        redirect={!isAuthenticated}
+        redirect={!isSignedIn}
       />
       <Tabs.Screen
         name="profile"
@@ -73,7 +72,7 @@ export default function ProtectedLayout() {
           tabBarIcon: () => <User className="text-foreground" />,
           tabBarLabelPosition: "below-icon",
         }}
-        redirect={!isAuthenticated}
+        redirect={!isSignedIn}
       />
     </Tabs>
   );

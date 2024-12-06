@@ -20,6 +20,7 @@ import * as Yup from "yup";
 import { yupResolver } from "@hookform/resolvers/yup";
 import { supabase } from "@/utils/supabase";
 import { toast } from "sonner-native";
+import { useAuth } from "@clerk/clerk-expo";
 
 const initialValues = {
   email: "",
@@ -46,6 +47,7 @@ export default function SignIn() {
     defaultValues: initialValues,
   });
   const [isLoading, setLoading] = useState<boolean>(false);
+  const {} = useAuth()
 
   useEffect(() => {
     navigation.setOptions({
@@ -60,31 +62,17 @@ export default function SignIn() {
     });
   }, [navigation]);
 
-  function dismissKeyboard() {
-    Keyboard.dismiss();
-  }
-
   async function onSubmit({ email, password }: typeof initialValues) {
     setLoading(true);
 
-    const { data, error } = await supabase.auth.signInWithPassword({
-      email: email,
-      password: password,
-    });
 
-    if (error) {
-      toast.error(error.message);
-    } else {
-      toast.success(t("form.login.message.login.successfully"));
-      navigation.goBack();
-    }
 
     setLoading(false);
   }
 
   return (
     <>
-      <TouchableWithoutFeedback onPress={dismissKeyboard}>
+      <TouchableWithoutFeedback onPress={() => Keyboard.dismiss()}>
         <View className="bg-background h-screen">
           <SafeAreaView className="my-12">
             <View className="w-11/12 mx-auto">
