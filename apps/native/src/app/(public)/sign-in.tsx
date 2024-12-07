@@ -20,7 +20,7 @@ import * as Yup from "yup";
 import { yupResolver } from "@hookform/resolvers/yup";
 import { supabase } from "@/utils/supabase";
 import { toast } from "sonner-native";
-import { useAuth } from "@clerk/clerk-expo";
+import { useAuth, useSignIn } from "@clerk/clerk-expo";
 
 const initialValues = {
   email: "",
@@ -47,7 +47,7 @@ export default function SignIn() {
     defaultValues: initialValues,
   });
   const [isLoading, setLoading] = useState<boolean>(false);
-  const {} = useAuth()
+  const { isLoaded, signIn, setActive } = useSignIn();
 
   useEffect(() => {
     navigation.setOptions({
@@ -65,7 +65,23 @@ export default function SignIn() {
   async function onSubmit({ email, password }: typeof initialValues) {
     setLoading(true);
 
+    if (!isLoaded) return;
 
+    try {
+      const signInAttempt = await signIn.create({
+        identifier: email,
+        password,
+      });
+
+      if (signInAttempt.status === "complete") {
+        await setActive({ session: signInAttempt.createdSessionId });
+        router.replace("/(protected)/(home)");
+      } else {
+        toast.error("Something went wrong");
+      }
+    } catch (err: any) {
+      toast.error(err.message);
+    }
 
     setLoading(false);
   }
