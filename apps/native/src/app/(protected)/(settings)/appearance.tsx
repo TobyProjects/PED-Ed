@@ -8,8 +8,7 @@ import { Button } from "@/components/ui/button";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import { SunMoon } from "@/components/icons/SunMoon";
 import HeaderWithGoBack from "@/components/HeaderWithGoBack";
-
-type ColorScheme = "light" | "dark";
+import { NAV_THEME } from "@/constants/Themes";
 
 export default function Appearance() {
   const navigation = useNavigation();
@@ -24,12 +23,23 @@ export default function Appearance() {
 
   useEffect(() => {
     navigation.setOptions({
-      header: () => (
-        <HeaderWithGoBack
-          icon={<ArrowLeft className="text-foreground" />}
-          title={t("Appearance")}
+      headerTitle: () => (
+        <Text className="text-foreground text-xl font-semibold">
+          {t("title.appearance")}
+        </Text>
+      ),
+      headerLeft: () => (
+        <ArrowLeft
+          onPress={() => router.replace("/(protected)/(settings)")}
+          className="text-foreground"
         />
       ),
+      headerStyle: {
+        backgroundColor:
+          colorScheme == "dark"
+            ? NAV_THEME.dark.background
+            : NAV_THEME.light.background,
+      },
     });
   }, [navigation]);
 

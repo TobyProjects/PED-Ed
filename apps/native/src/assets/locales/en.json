@@ -45,13 +45,16 @@
     "signIn": "Sign in",
     "verifyEmail": "Verify my email",
     "signOut": "Sign Out",
-    "editProfile": "Edit Profile"
+    "editProfile": "Edit Profile",
+    "changeAvatar": "Change Avatar"
   },
   "title": {
     "signUp": "Create an account",
     "signIn": "Welcome back",
     "signIn.subTitle": "We are so excited to see you again.",
-    "verifyEmail": "Verify your email"
+    "verifyEmail": "Verify your email",
+    "settings": "Settings",
+    "appearance": "Appearance"
   },
   "label": {
     "accountInformation": "Account Information",
@@ -62,7 +65,8 @@
     "username": "Username",
     "password2": "Confirm Password",
     "verifyCode": "Verification Code",
-    "forgotPassword": "Forgot your password?"
+    "forgotPassword": "Forgot your password?",
+    "aboutMe": "About Me"
   },
   "placeholder": {
     "email": "Enter your email address",
@@ -71,7 +75,8 @@
     "firstName": "Enter your first name",
     "lastName": "Enter your last name",
     "password2": "Re-enter your password",
-    "verifyCode": "Enter the verification code sent to your email"
+    "verifyCode": "Enter the verification code sent to your email",
+    "aboutMe": "Hello everyone..."
   },
   "tab": {
     "gallery": "Gallery",

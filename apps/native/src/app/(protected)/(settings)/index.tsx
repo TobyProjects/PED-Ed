@@ -12,6 +12,8 @@ import { Shield } from "@/components/icons/Shield";
 import { Palette } from "@/components/icons/Palette";
 import { Globe } from "@/components/icons/Globe";
 import { Bell } from "@/components/icons/Bell";
+import { useColorScheme } from "@/hooks/useColorScheme";
+import { NAV_THEME } from "@/constants/Themes";
 
 interface SettingItem {
   id: string;
@@ -34,12 +36,13 @@ export default function Settings() {
   const navigation = useNavigation();
   const router = useRouter();
   const { t } = useTranslation();
+  const { colorScheme } = useColorScheme();
 
   useEffect(() => {
     navigation.setOptions({
       headerTitle: () => (
         <Text className="text-foreground text-xl font-semibold">
-          {t("page.settings.title")}
+          {t("title.settings")}
         </Text>
       ),
       headerLeft: () => (
@@ -49,7 +52,10 @@ export default function Settings() {
         />
       ),
       headerStyle: {
-        backgroundColor: "transparent",
+        backgroundColor:
+          colorScheme == "dark"
+            ? NAV_THEME.dark.background
+            : NAV_THEME.light.background,
       },
     });
   }, [navigation]);
@@ -63,7 +69,9 @@ export default function Settings() {
             {accountSettings.map((item, index) => (
               <TouchableOpacity
                 key={item.id}
-                onPress={() => router.push(`/(protected)/(settings)/${item.id}`)}
+                onPress={() =>
+                  router.push(`/(protected)/(settings)/${item.id}`)
+                }
                 className={`flex-row items-center p-4 ${
                   index !== accountSettings.length - 1
                     ? "border-b border-border"
@@ -87,7 +95,9 @@ export default function Settings() {
             {appSettings.map((item, index) => (
               <TouchableOpacity
                 key={item.id}
-                onPress={() => router.push(`/(protected)/(settings)/${item.id}`)}
+                onPress={() =>
+                  router.push(`/(protected)/(settings)/${item.id}`)
+                }
                 className={`flex-row items-center p-4 ${
                   index !== appSettings.length - 1
                     ? "border-b border-border"

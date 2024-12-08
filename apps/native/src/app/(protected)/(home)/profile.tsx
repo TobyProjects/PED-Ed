@@ -48,8 +48,12 @@ export default function TabsScreen() {
             username={username}
             avatar={avatar}
           />
+
           <View className="flex-row justify-center items-center">
-            <Button className="w-11/12 flex-row gap-3 rounded-3xl">
+            <Button
+              className="w-11/12 flex-row gap-3 rounded-3xl"
+              onPress={() => router.push("/(protected)/(user)/edit-profile")}
+            >
               <Text>
                 <Pencil className="text-foreground" />
               </Text>
