@@ -29,6 +29,7 @@
     "@rn-primitives/types": "^1.1.0",
     "class-variance-authority": "^0.7.1",
     "clsx": "^2.1.1",
+    "convex": "^1.17.3",
     "expo": "~52.0.15",
     "expo-blur": "~14.0.1",
     "expo-constants": "~17.0.3",

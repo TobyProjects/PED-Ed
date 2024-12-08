@@ -8,11 +8,17 @@ import bg1 from "@/assets/images/backgrounds/bg1.png";
 import logo from "@/assets/images/llvm.png";
 import { useTranslation } from "react-i18next";
 import { useNavigation, useRouter } from "expo-router";
+import { useQuery } from "convex/react";
+import { api } from "../../../convex/_generated/api";
 
 export default function WelcomeScreen() {
   const { t } = useTranslation();
   const router = useRouter();
   const navigation = useNavigation();
+
+  const data = useQuery(api.users.getAllUsers)
+
+  //console.log(data);
 
   useEffect(() => {
     navigation.setOptions({
