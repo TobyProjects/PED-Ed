@@ -33,13 +33,13 @@ export default function WelcomeScreen() {
           <View>
             <Image source={logo} className="w-96 h-64 mx-auto my-3" />
             <Text className="text-white text-center text-7xl font-bold font-uniSansHeavy">
-              {t("welcome-text")}
+              {t("app.welcome")}
             </Text>
             <Text className="text-white text-center text-7xl font-bold font-uniSansHeavy">
-              {t("app-name")}
+              {t("app.name")}
             </Text>
             <Text className="text-white text-center text-2xl">
-              {t("slogan")}
+              {t("app.slogan")}
             </Text>
           </View>
           <View className="w-full mb-8 flex gap-3">
@@ -47,13 +47,13 @@ export default function WelcomeScreen() {
               className="w-full bg-white rounded-full"
               onPress={() => router.push("/(public)/sign-up")}
             >
-              <Text className="text-gray-900">{t("form.register.button")}</Text>
+              <Text className="text-gray-900">{t("button.signUp")}</Text>
             </Button>
             <Button
               className="w-full bg-primary rounded-full"
               onPress={() => router.push("/(public)/sign-in")}
             >
-              <Text className="text-white">{t("form.login.button")}</Text>
+              <Text className="text-white">{t("button.signIn")}</Text>
             </Button>
           </View>
         </SafeAreaView>

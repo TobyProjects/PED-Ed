@@ -7,10 +7,8 @@ import { useNavigation, useRouter } from "expo-router";
 import React, { useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
 import {
-  Alert,
   Keyboard,
   Pressable,
-  TouchableOpacity,
   TouchableWithoutFeedback,
   View,
 } from "react-native";
@@ -18,20 +16,19 @@ import { SafeAreaView } from "react-native-safe-area-context";
 import { Controller, useForm } from "react-hook-form";
 import * as Yup from "yup";
 import { yupResolver } from "@hookform/resolvers/yup";
-import { supabase } from "@/utils/supabase";
 import { toast } from "sonner-native";
-import { useAuth, useSignIn } from "@clerk/clerk-expo";
+import { useSignIn } from "@clerk/clerk-expo";
 
-const initialValues = {
-  email: "",
-  password: "",
+type FormValues = {
+  email: string;
+  password: string;
 };
 
 const schema = Yup.object({
   email: Yup.string()
-    .email("form.error.email.invalid")
-    .required("form.error.email.required"),
-  password: Yup.string().required("form.error.password.required"),
+    .email("error.email.invalid")
+    .required("error.email.required"),
+  password: Yup.string().required("error.password.required"),
 });
 
 export default function SignIn() {
@@ -44,7 +41,6 @@ export default function SignIn() {
     formState: { errors },
   } = useForm({
     resolver: yupResolver(schema),
-    defaultValues: initialValues,
   });
   const [isLoading, setLoading] = useState<boolean>(false);
   const { isLoaded, signIn, setActive } = useSignIn();
@@ -62,7 +58,7 @@ export default function SignIn() {
     });
   }, [navigation]);
 
-  async function onSubmit({ email, password }: typeof initialValues) {
+  async function onSubmit({ email, password }: FormValues) {
     setLoading(true);
 
     if (!isLoaded) return;
@@ -77,7 +73,7 @@ export default function SignIn() {
         await setActive({ session: signInAttempt.createdSessionId });
         router.replace("/(protected)/(home)");
       } else {
-        toast.error("Something went wrong");
+        toast.error(t("alert.somethingWentWrong"));
       }
     } catch (err: any) {
       toast.error(err.message);
@@ -93,15 +89,15 @@ export default function SignIn() {
           <SafeAreaView className="my-12">
             <View className="w-11/12 mx-auto">
               <Text className="text-foreground text-center font-bold text-5xl font-uniSansHeavy">
-                {t("form.login.title")}
+                {t("title.signIn")}
               </Text>
               <Text className="text-muted-foreground text-center font-bold">
-                {t("form.login.subtitle")}
+                {t("title.signIn.subTitle")}
               </Text>
               <View className="mt-12">
                 <View className="flex gap-3">
-                  <Label className="text-muted-foreground">
-                    {t("form.login.label")}
+                  <Label className="text-muted-foreground font-bold">
+                    {t("label.accountInformation")}
                   </Label>
                   <View>
                     <Controller
@@ -114,7 +110,7 @@ export default function SignIn() {
                           onBlur={onBlur}
                           inputMode="email"
                           aria-labelledby="email"
-                          placeholder={t("form.login.placeholder.email")}
+                          placeholder={t("placeholder.email")}
                         />
                       )}
                     />
@@ -135,7 +131,7 @@ export default function SignIn() {
                           value={value}
                           secureTextEntry={true}
                           aria-labelledby="password"
-                          placeholder={t("form.login.placeholder.password")}
+                          placeholder={t("placeholder.password")}
                         />
                       )}
                     />
@@ -150,7 +146,7 @@ export default function SignIn() {
                     onPress={() => router.replace("/reset-password")}
                   >
                     <Text className="text-blue-500">
-                      {t("form.login.label.forgot-password")}
+                      {t("label.forgotPassword")}
                     </Text>
                   </Pressable>
                   <Button
@@ -158,7 +154,7 @@ export default function SignIn() {
                     onPress={handleSubmit(onSubmit)}
                     disabled={isLoading}
                   >
-                    <Text>{t("form.login.button")}</Text>
+                    <Text>{t("button.signIn")}</Text>
                   </Button>
                 </View>
               </View>

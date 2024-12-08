@@ -1,65 +1,83 @@
 {
-  "app-name": "PED-Ed",
-  "welcome-text": "Welcome to",
-  "slogan": "The free and effective way to learn",
-
-  "_TabItems": "Tab items",
-  "tab.home": "Home",
-  "tab.profile": "Profile",
-  "tab.flashcards": "Flashcards",
-  "tab.pomodoro": "Pomodoro",
-  "tab.gallery": "Gallery",
-
-  "_AlertDialog": "Alert dialog",
-  "alert.register.successfully.title": "Account created successfully",
-  "alert.register.successfully.description": "Please check your email for confirmation",
-  "alert.register.successfully.button.home": "Back to home",
-
-  "_ResetPasswordForm": "Reset my password",
-  "form.resetpassword.title": "Reset my password",
-  "form.resetpassword.label.email": "Email",
-  "form.resetpassword.label.emailRequired": "Email is required",
-  "form.resetpassword.button": "Reset my password",
-  "form.resetpassword.emailSent": "We have sent a password reset link to your email.",
-  "form.resetpassword.countdown": "Please wait {{seconds}}s to resend an email",
-
-  "_LoginForm": "Do not edit this line",
-  "form.login.title": "Welcome back",
-  "form.login.subtitle": "We are so excited to see you again!",
-  "form.login.label": "Account Information",
-  "form.login.placeholder.email": "Email",
-  "form.login.placeholder.password": "Password",
-  "form.login.label.forgot-password": "Forgot your password?",
-  "form.login.button": "Log In",
-  "form.login.label.emailRequired": "Email is required",
-  "form.login.label.passwordRequired": "Password is required",
-  "form.login.message.login.successfully": "Signed in successfully",
-
-  "_RegisterForm": "Do not edit this line",
-  "form.register.title": "Create an account",
-  "form.register.label.email": "Email",
-  "form.register.label.displayName": "Display Name",
-  "form.register.label.displayName.tip": "You can use emoji and special characters.",
-  "form.register.label.username": "Username",
-  "form.register.placeholder.username": "You can't change this later",
-  "form.register.placeholder.password": "Your password must be more than 8 characters",
-  "form.register.label.password": "Password",
-  "form.register.label.password2": "Repeat Password",
-  "form.register.button": "Create an account",
-  "form.register.message.register.successfully": "We sent an verify link to your email.",
-  "page.settings.appearance.title": "Appearance",
-
-  "_FormError": "Form errors",
-  "form.error.email.invalid": "Invalid email",
-  "form.error.email.required": "Email is required",
-  "form.error.displayName.required": "Display name is required",
-  "form.error.displayName.tooShort": "Display name must be at least 5 characters",
-  "form.error.displayName.tooLong": "Display name cannot exceed more than 20 characters",
-  "form.error.username.required": "Username is required",
-  "form.error.username.tooShort": "Username must be at least 5 characters",
-  "form.error.username.tooLong": "Username cannot exceed more than 20 characters",
-  "form.error.password.required": "Password is required",
-  "form.error.password.tooShort": "Password must be at least 8 characters",
-  "form.error.password.tooLong": "Password cannot exceed more than 100 characters",
-  "form.error.password.mismatch": "Passwords do not match"
+  "app": {
+    "name": "PED Ed",
+    "welcome": "Welcome to",
+    "slogan": "The free and effective way for learning"
+  },
+  "text": {
+    "memberSince": "Member Since",
+    "aboutMe": "About Me"
+  },
+  "alert": {
+    "somethingWentWrong": "Something went wrong",
+    "email": {
+      "verificationSent": "We sent a verification code to your email"
+    }
+  },
+  "error": {
+    "user": {
+      "emptyDescription": "This user has no description."
+    },
+    "email": {
+      "invalid": "Invalid email address",
+      "required": "Email is required"
+    },
+    "username": {
+      "required": "Username is required",
+      "tooShort": "Username must be at least 5 characters long",
+      "tooLong": "Username cannot exceed 20 characters"
+    },
+    "firstName": {
+      "required": "First name is required"
+    },
+    "lastName": {
+      "required": "Last name is required"
+    },
+    "password": {
+      "required": "Password is required",
+      "tooShort": "Password must be at least 8 characters long",
+      "tooLong": "Password cannot exceed 100 characters",
+      "misMatch": "Passwords do not match"
+    }
+  },
+  "button": {
+    "signUp": "Create an account",
+    "signIn": "Sign in",
+    "verifyEmail": "Verify my email",
+    "signOut": "Sign Out",
+    "editProfile": "Edit Profile"
+  },
+  "title": {
+    "signUp": "Create an account",
+    "signIn": "Welcome back",
+    "signIn.subTitle": "We are so excited to see you again.",
+    "verifyEmail": "Verify your email"
+  },
+  "label": {
+    "accountInformation": "Account Information",
+    "email": "Email",
+    "password": "Password",
+    "firstName": "First Name",
+    "lastName": "Last Name",
+    "username": "Username",
+    "password2": "Confirm Password",
+    "verifyCode": "Verification Code",
+    "forgotPassword": "Forgot your password?"
+  },
+  "placeholder": {
+    "email": "Enter your email address",
+    "password": "Enter your password",
+    "username": "Choose a unique username",
+    "firstName": "Enter your first name",
+    "lastName": "Enter your last name",
+    "password2": "Re-enter your password",
+    "verifyCode": "Enter the verification code sent to your email"
+  },
+  "tab": {
+    "gallery": "Gallery",
+    "flashcards": "Flashcards",
+    "home": "Home",
+    "pomodoro": "Pomodoro",
+    "profile": "Profile"
+  }
 }

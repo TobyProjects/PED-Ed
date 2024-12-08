@@ -24,21 +24,21 @@ type FormValues = {
 
 const schema = Yup.object({
   email: Yup.string()
-    .email("form.error.email.invalid")
-    .required("form.error.email.required"),
+    .email("error.email.invalid")
+    .required("error.email.required"),
   username: Yup.string()
-    .required("form.error.username.required")
-    .min(5, "form.error.username.tooShort")
-    .max(20, "form.error.username.tooLong"),
-  firstName: Yup.string().required("form.error.firstName.required"),
-  lastName: Yup.string().required("form.error.lastName.required"),
+    .required("error.username.required")
+    .min(5, "error.username.tooShort")
+    .max(20, "error.username.tooLong"),
+  firstName: Yup.string().required("error.firstName.required"),
+  lastName: Yup.string().required("error.lastName.required"),
   password: Yup.string()
-    .required("form.error.password.required")
-    .min(8, "form.error.password.tooShort")
-    .max(100, "form.error.password.tooLong"),
+    .required("error.password.required")
+    .min(8, "error.password.tooShort")
+    .max(100, "error.password.tooLong"),
   password2: Yup.string().oneOf(
     [Yup.ref("password")],
-    "form.error.password.mismatch",
+    "error.password.misMatch",
   ),
 });
 
@@ -91,6 +91,8 @@ export default function SignUp() {
 
       await signUp.prepareEmailAddressVerification({ strategy: "email_code" });
 
+      toast.success(t("alert.email.verificationSent"));
+
       router.replace("/(public)/verify-email");
     } catch (e: any) {
       toast.error(e.message);
@@ -105,20 +107,20 @@ export default function SignUp() {
         <SafeAreaView className="my-12">
           <View className="w-11/12 mx-auto">
             <Text className="text-foreground text-center font-bold text-5xl font-uniSansHeavy">
-              {t("form.register.title")}
+              {t("title.signUp")}
             </Text>
             <View className="mt-12">
               <View className="flex gap-3">
                 <View>
                   <Label nativeID="email" className="font-bold">
-                    {t("form.register.label.email")}
+                    {t("label.email")}
                   </Label>
                   <Controller
                     control={control}
                     name="email"
                     render={({ field: { onChange, onBlur, value } }) => (
                       <Input
-                        placeholder={t("form.register.label.email")}
+                        placeholder={t("placeholder.email")}
                         inputMode="email"
                         aria-labelledby="email"
                         onChangeText={onChange}
@@ -135,14 +137,14 @@ export default function SignUp() {
                 </View>
                 <View>
                   <Label nativeID="firstName" className="font-bold">
-                    {t("form.register.label.firstName")}
+                    {t("label.firstName")}
                   </Label>
                   <Controller
                     control={control}
                     name="firstName"
                     render={({ field: { onChange, onBlur, value } }) => (
                       <Input
-                        placeholder={t("form.register.label.firstName.tip")}
+                        placeholder={t("placeholder.firstName")}
                         inputMode="text"
                         aria-labelledby="firstName"
                         onChangeText={onChange}
@@ -159,14 +161,14 @@ export default function SignUp() {
                 </View>
                 <View>
                   <Label nativeID="lastName" className="font-bold">
-                    {t("form.register.label.lastName")}
+                    {t("label.lastName")}
                   </Label>
                   <Controller
                     control={control}
                     name="lastName"
                     render={({ field: { onChange, onBlur, value } }) => (
                       <Input
-                        placeholder={t("form.register.label.lastName.tip")}
+                        placeholder={t("placeholder.lastName")}
                         inputMode="text"
                         aria-labelledby="lastName"
                         onChangeText={onChange}
@@ -182,15 +184,15 @@ export default function SignUp() {
                   )}
                 </View>
                 <View>
-                  <Label nativeID="username">
-                    {t("form.register.label.username")}
+                  <Label nativeID="username" className="font-bold">
+                    {t("label.username")}
                   </Label>
                   <Controller
                     control={control}
                     name="username"
                     render={({ field: { onChange, onBlur, value } }) => (
                       <Input
-                        placeholder={t("form.register.placeholder.username")}
+                        placeholder={t("placeholder.username")}
                         inputMode="text"
                         aria-labelledby="username"
                         onChangeText={onChange}
@@ -207,14 +209,14 @@ export default function SignUp() {
                 </View>
                 <View>
                   <Label nativeID="password" className="font-bold">
-                    {t("form.register.label.password")}
+                    {t("label.password")}
                   </Label>
                   <Controller
                     control={control}
                     name="password"
                     render={({ field: { onChange, onBlur, value } }) => (
                       <Input
-                        placeholder={t("form.register.placeholder.password")}
+                        placeholder={t("placeholder.password")}
                         inputMode="text"
                         aria-labelledby="password"
                         onChangeText={onChange}
@@ -232,7 +234,7 @@ export default function SignUp() {
                 </View>
                 <View>
                   <Label nativeID="password2" className="font-bold">
-                    {t("form.register.label.password2")}
+                    {t("label.password2")}
                   </Label>
                   <Controller
                     control={control}
@@ -260,7 +262,7 @@ export default function SignUp() {
                   onPress={handleSubmit(onSubmit)}
                   disabled={isLoading}
                 >
-                  <Text>{t("form.register.button")}</Text>
+                  <Text>{t("button.signUp")}</Text>
                 </Button>
               </View>
             </View>

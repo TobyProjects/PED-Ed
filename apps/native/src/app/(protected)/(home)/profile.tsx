@@ -1,25 +1,30 @@
 import * as React from "react";
-import { Alert, Pressable, ScrollView, View } from "react-native";
+import { Pressable, ScrollView, View } from "react-native";
 import { Button } from "@/components/ui/button";
-import {
-  Card,
-  CardContent,
-  CardDescription,
-  CardFooter,
-  CardHeader,
-  CardTitle,
-} from "@/components/ui/card";
 import { Text } from "@/components/ui/text";
 import { SafeAreaView } from "react-native-safe-area-context";
 import { Cog } from "@/components/icons/Cog";
 import { Pencil } from "@/components/icons/Pencil";
 import { router } from "expo-router";
 import { LogOut } from "@/components/icons/LogOut";
-import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
-import { useAuth } from "@clerk/clerk-expo";
+import { useAuth, useUser } from "@clerk/clerk-expo";
+import AboutMe from "@/features/user/components/AboutMe";
+import Avatar from "@/features/user/components/Avatar";
+import { useTranslation } from "react-i18next";
 
 export default function TabsScreen() {
+  const { t } = useTranslation();
   const { signOut } = useAuth();
+  const { user } = useUser();
+
+  if (!user) return null;
+
+  const description = user.publicMetadata.description as string | undefined;
+  const username = user.username as string;
+  const firstName = user.firstName as string;
+  const lastName = user.lastName as string;
+  const userId = user.id;
+  const avatar = user.imageUrl;
 
   async function onSignOut() {
     await signOut();
@@ -37,50 +42,25 @@ export default function TabsScreen() {
           </Pressable>
         </View>
         <View className="flex gap-8 justify-center items-center mt-24">
-          <View>
-            <Avatar alt="User Avatar" className="w-32 h-32">
-              <AvatarImage
-                source={{ uri: "https://github.com/definedentity.png" }}
-              />
-              <AvatarFallback>
-                <Text>A</Text>
-              </AvatarFallback>
-            </Avatar>
-          </View>
-          <View>
-            <Text className="text-3xl text-center font-semibold">Test</Text>
-            <Text className="text-center text-muted-foreground text-lg">
-              test
-            </Text>
-          </View>
+          <Avatar
+            firstName={firstName}
+            lastName={lastName}
+            username={username}
+            avatar={avatar}
+          />
           <View className="flex-row justify-center items-center">
             <Button className="w-11/12 flex-row gap-3 rounded-3xl">
               <Text>
                 <Pencil className="text-foreground" />
               </Text>
-              <Text className="">Edit profile</Text>
+              <Text className="">{t("button.editProfile")}</Text>
             </Button>
           </View>
           <View className="w-11/12">
-            <Card className="rounded-3xl">
-              <CardHeader>
-                <CardTitle className="text-xl font-semibold">
-                  About Me
-                </CardTitle>
-              </CardHeader>
-              <CardContent>
-                <Text>
-                  Lorem ipsum dolor sit amet consectetur adipisicing elit.
-                  Molestias asperiores a voluptatem maxime vel dolorem quos,
-                  eligendi sit, veritatis neque quod laudantium ullam minus
-                  inventore quo iste, accusamus eius aliquam.
-                </Text>
-              </CardContent>
-              <CardFooter className="flex-col items-start">
-                <Text className="text-sm font-semibold">Member Since</Text>
-                <Text>June 25, 2023</Text>
-              </CardFooter>
-            </Card>
+            <AboutMe
+              memberSince={user?.createdAt ? user.createdAt : new Date()}
+              description={description}
+            />
           </View>
           <View className="flex-row justify-center items-center">
             <Button
@@ -91,7 +71,7 @@ export default function TabsScreen() {
               <Text>
                 <LogOut className="text-foreground" />
               </Text>
-              <Text className="">Sign Out</Text>
+              <Text className="">{t("button.signOut")}</Text>
             </Button>
           </View>
         </View>

@@ -63,11 +63,9 @@ export default function VerifyEmail() {
     <SafeAreaView className="bg-background h-full">
       <View className="w-11/12 mx-auto mt-12">
         <Text className="text-foreground text-center font-uniSansHeavy text-5xl font-bold">
-          Verify your email
+          {t("title.verifyEmail")}
         </Text>
-        <Text className="text-muted-foreground text-center font-bold">
-          We have sent a verification code to your email
-        </Text>
+
         <View className="mt-6">
           <Label nativeID="code" className="font-semibold">
             Verification Code
@@ -98,7 +96,7 @@ export default function VerifyEmail() {
           onPress={handleSubmit(onSubmit)}
           disabled={isLoading}
         >
-          <Text>{t("form.register.button")}</Text>
+          <Text className="text-foreground">{t("button.verifyEmail")}</Text>
         </Button>
       </View>
     </SafeAreaView>
