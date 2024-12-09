@@ -19,6 +19,7 @@ import { Button } from "@/components/ui/button";
 import { useSignIn, useSignUp } from "@clerk/clerk-expo";
 import { toast } from "sonner-native";
 import { TouchableWithoutFeedback } from "react-native-gesture-handler";
+import { Scroll } from "lucide-react-native";
 
 const schema = Yup.object({
   code: Yup.string().required("error.verificationCode.required"),
@@ -57,6 +58,8 @@ export default function () {
         password,
       });
 
+      console.log(result);
+
       if (result.status === "complete") {
         setActive({ session: result.createdSessionId });
         router.replace("/(protected)/(home)");
@@ -76,11 +79,14 @@ export default function () {
 
   return (
     <SafeAreaView className="bg-background h-full">
-      <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
-        <KeyboardAvoidingView
-          behavior={Platform.OS == "ios" ? "padding" : "height"}
+      <KeyboardAvoidingView
+        behavior={Platform.OS == "ios" ? "padding" : "height"}
+      >
+        <ScrollView
+          className="w-full h-full"
+          keyboardShouldPersistTaps="handled"
         >
-          <ScrollView className="w-11/12 mx-auto h-full mt-12">
+          <View className="w-11/12 mx-auto h-full mt-12">
             <Text className="text-foreground text-center font-uniSansHeavy text-5xl font-bold">
               {t("title.verifyEmail")}
             </Text>
@@ -127,6 +133,7 @@ export default function () {
                     onBlur={onBlur}
                     value={value}
                     className="mt-1"
+                    secureTextEntry={true}
                   />
                 )}
               />
@@ -146,9 +153,9 @@ export default function () {
                 {t("button.resetPassword")}
               </Text>
             </Button>
-          </ScrollView>
-        </KeyboardAvoidingView>
-      </TouchableWithoutFeedback>
+          </View>
+        </ScrollView>
+      </KeyboardAvoidingView>
     </SafeAreaView>
   );
 }
