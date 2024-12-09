@@ -8,7 +8,10 @@ import React, { useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
 import {
   Keyboard,
+  KeyboardAvoidingView,
+  Platform,
   Pressable,
+  ScrollView,
   TouchableWithoutFeedback,
   View,
 } from "react-native";
@@ -83,85 +86,92 @@ export default function SignIn() {
   }
 
   return (
-    <>
-      <TouchableWithoutFeedback onPress={() => Keyboard.dismiss()}>
-        <View className="bg-background h-screen">
-          <SafeAreaView className="my-12">
-            <View className="w-11/12 mx-auto">
-              <Text className="text-foreground text-center font-bold text-5xl font-uniSansHeavy">
-                {t("title.signIn")}
-              </Text>
-              <Text className="text-muted-foreground text-center font-bold">
-                {t("title.signIn.subTitle")}
-              </Text>
-              <View className="mt-12">
-                <View className="flex gap-3">
-                  <Label className="text-muted-foreground font-bold">
-                    {t("label.accountInformation")}
-                  </Label>
-                  <View>
-                    <Controller
-                      name="email"
-                      control={control}
-                      render={({ field: { onChange, onBlur, value } }) => (
-                        <Input
-                          value={value}
-                          onChangeText={onChange}
-                          onBlur={onBlur}
-                          inputMode="email"
-                          aria-labelledby="email"
-                          placeholder={t("placeholder.email")}
-                        />
+    <SafeAreaView className="bg-background h-full">
+      <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
+        <KeyboardAvoidingView
+          behavior={Platform.OS == "ios" ? "padding" : "height"}
+        >
+          <ScrollView
+            className="w-full h-full"
+            keyboardShouldPersistTaps="handled"
+          >
+            <View className="my-12">
+              <View className="w-11/12 mx-auto">
+                <Text className="text-foreground text-center font-bold text-5xl font-uniSansHeavy">
+                  {t("title.signIn")}
+                </Text>
+                <Text className="text-muted-foreground text-center font-bold">
+                  {t("title.signIn.subTitle")}
+                </Text>
+                <View className="mt-12">
+                  <View className="flex gap-3">
+                    <Label className="text-muted-foreground font-bold">
+                      {t("label.accountInformation")}
+                    </Label>
+                    <View>
+                      <Controller
+                        name="email"
+                        control={control}
+                        render={({ field: { onChange, onBlur, value } }) => (
+                          <Input
+                            value={value}
+                            onChangeText={onChange}
+                            onBlur={onBlur}
+                            inputMode="email"
+                            aria-labelledby="email"
+                            placeholder={t("placeholder.email")}
+                          />
+                        )}
+                      />
+                      {errors && errors["email"] && (
+                        <Label className="text-destructive" nativeID="email">
+                          {t(errors["email"].message!!)}
+                        </Label>
                       )}
-                    />
-                    {errors && errors["email"] && (
-                      <Label className="text-destructive" nativeID="email">
-                        {t(errors["email"].message!!)}
-                      </Label>
-                    )}
-                  </View>
-                  <View>
-                    <Controller
-                      name="password"
-                      control={control}
-                      render={({ field: { onChange, onBlur, value } }) => (
-                        <Input
-                          onChangeText={onChange}
-                          onBlur={onBlur}
-                          value={value}
-                          secureTextEntry={true}
-                          aria-labelledby="password"
-                          placeholder={t("placeholder.password")}
-                        />
+                    </View>
+                    <View>
+                      <Controller
+                        name="password"
+                        control={control}
+                        render={({ field: { onChange, onBlur, value } }) => (
+                          <Input
+                            onChangeText={onChange}
+                            onBlur={onBlur}
+                            value={value}
+                            secureTextEntry={true}
+                            aria-labelledby="password"
+                            placeholder={t("placeholder.password")}
+                          />
+                        )}
+                      />
+                      {errors && errors["password"] && (
+                        <Label className="text-destructive" nativeID="password">
+                          {t(errors["password"].message!!)}
+                        </Label>
                       )}
-                    />
-                    {errors && errors["password"] && (
-                      <Label className="text-destructive" nativeID="password">
-                        {t(errors["password"].message!!)}
-                      </Label>
-                    )}
+                    </View>
+                    <Pressable
+                      className="self-start"
+                      onPress={() => router.replace("/reset-password")}
+                    >
+                      <Text className="text-blue-500">
+                        {t("label.forgotPassword")}
+                      </Text>
+                    </Pressable>
+                    <Button
+                      className="text-foreground"
+                      onPress={handleSubmit(onSubmit)}
+                      disabled={isLoading}
+                    >
+                      <Text>{t("button.signIn")}</Text>
+                    </Button>
                   </View>
-                  <Pressable
-                    className="self-start"
-                    onPress={() => router.replace("/reset-password")}
-                  >
-                    <Text className="text-blue-500">
-                      {t("label.forgotPassword")}
-                    </Text>
-                  </Pressable>
-                  <Button
-                    className="text-foreground"
-                    onPress={handleSubmit(onSubmit)}
-                    disabled={isLoading}
-                  >
-                    <Text>{t("button.signIn")}</Text>
-                  </Button>
                 </View>
               </View>
             </View>
-          </SafeAreaView>
-        </View>
+          </ScrollView>
+        </KeyboardAvoidingView>
       </TouchableWithoutFeedback>
-    </>
+    </SafeAreaView>
   );
 }

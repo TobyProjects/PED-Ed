@@ -4,10 +4,8 @@ import { internal } from "./_generated/api";
 
 const http = httpRouter();
 
-export const clerkUsers = httpAction(async (ctx, req) => {
+export const clerkUser = httpAction(async (ctx, req) => {
   const { data, type } = await req.json();
-
-  console.log(data, type);
 
   switch (type) {
     case "user.created":
@@ -33,9 +31,9 @@ export const clerkUsers = httpAction(async (ctx, req) => {
 });
 
 http.route({
-  path: "/clerk-users",
+  path: "/clerk-user",
   method: "POST",
-  handler: clerkUsers,
+  handler: clerkUser,
 });
 
 export default http;

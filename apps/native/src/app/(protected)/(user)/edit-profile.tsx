@@ -19,9 +19,7 @@ import { useUser } from "@clerk/clerk-expo";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { Button } from "@/components/ui/button";
 import * as ImagePicker from "expo-image-picker";
-import Header from "@/components/Header";
 import { ArrowLeft } from "@/components/icons/ArrowLeft";
-import { vars } from "nativewind";
 import { useColorScheme } from "@/hooks/useColorScheme";
 import { NAV_THEME } from "@/constants/Themes";
 

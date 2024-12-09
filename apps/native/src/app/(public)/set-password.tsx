@@ -1,9 +1,9 @@
 import {
   View,
   Text,
+  Keyboard,
   KeyboardAvoidingView,
   ScrollView,
-  Keyboard,
   Platform,
 } from "react-native";
 import React, { useEffect, useState } from "react";
@@ -16,15 +16,16 @@ import { useTranslation } from "react-i18next";
 import * as Yup from "yup";
 import { yupResolver } from "@hookform/resolvers/yup";
 import { Button } from "@/components/ui/button";
-import { useSignUp } from "@clerk/clerk-expo";
+import { useSignIn, useSignUp } from "@clerk/clerk-expo";
 import { toast } from "sonner-native";
 import { TouchableWithoutFeedback } from "react-native-gesture-handler";
 
 const schema = Yup.object({
-  code: Yup.string().required("form.error.verificationCode.required"),
+  code: Yup.string().required("error.verificationCode.required"),
+  password: Yup.string().required("error.password.required"),
 });
 
-export default function VerifyEmail() {
+export default function () {
   const navigation = useNavigation();
   const { t } = useTranslation();
   const {
@@ -35,27 +36,33 @@ export default function VerifyEmail() {
     resolver: yupResolver(schema),
   });
   const [isLoading, setLoading] = useState<boolean>(false);
-  const { isLoaded, signUp, setActive } = useSignUp();
+  const { isLoaded, signIn, setActive } = useSignIn();
   const router = useRouter();
 
-  async function onSubmit({ code }: { code: string }) {
+  async function onSubmit({
+    code,
+    password,
+  }: {
+    code: string;
+    password: string;
+  }) {
     setLoading(true);
 
     if (!isLoaded) return;
 
     try {
-      const signUpAttempt = await signUp.attemptEmailAddressVerification({
+      const result = await signIn.attemptFirstFactor({
+        strategy: "reset_password_email_code",
         code,
+        password,
       });
 
-      if (signUpAttempt.status === "complete") {
-        await setActive({ session: signUpAttempt.createdSessionId });
+      if (result.status === "complete") {
+        setActive({ session: result.createdSessionId });
         router.replace("/(protected)/(home)");
-      } else {
-        toast.error("Verifying email failed");
       }
-    } catch (err: any) {
-      toast.error(err.message);
+    } catch (error: any) {
+      toast.error(error.message);
     }
 
     setLoading(false);
@@ -73,10 +80,7 @@ export default function VerifyEmail() {
         <KeyboardAvoidingView
           behavior={Platform.OS == "ios" ? "padding" : "height"}
         >
-          <ScrollView
-            className="w-11/12 mx-auto mt-12 h-full"
-            keyboardShouldPersistTaps="handled"
-          >
+          <ScrollView className="w-11/12 mx-auto h-full mt-12">
             <Text className="text-foreground text-center font-uniSansHeavy text-5xl font-bold">
               {t("title.verifyEmail")}
             </Text>
@@ -106,12 +110,41 @@ export default function VerifyEmail() {
                 </Label>
               )}
             </View>
+
+            <View className="mt-6">
+              <Label nativeID="password" className="font-semibold">
+                {t("label.password")}
+              </Label>
+              <Controller
+                control={control}
+                name="password"
+                render={({ field: { onChange, onBlur, value } }) => (
+                  <Input
+                    placeholder={t("placeholder.newPassword")}
+                    inputMode="text"
+                    aria-labelledby="password"
+                    onChangeText={onChange}
+                    onBlur={onBlur}
+                    value={value}
+                    className="mt-1"
+                  />
+                )}
+              />
+              {errors && errors["password"] && (
+                <Label className="text-destructive" nativeID="password">
+                  {t(errors["password"].message!!)}
+                </Label>
+              )}
+            </View>
+
             <Button
               className="text-foreground mt-2"
               onPress={handleSubmit(onSubmit)}
               disabled={isLoading}
             >
-              <Text className="text-foreground">{t("button.verifyEmail")}</Text>
+              <Text className="text-foreground">
+                {t("button.resetPassword")}
+              </Text>
             </Button>
           </ScrollView>
         </KeyboardAvoidingView>

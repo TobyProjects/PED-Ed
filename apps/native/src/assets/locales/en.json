@@ -11,7 +11,8 @@
   "alert": {
     "somethingWentWrong": "Something went wrong",
     "email": {
-      "verificationSent": "We sent a verification code to your email"
+      "verificationSent": "We sent a verification code to your email",
+      "resetPasswordCodeSent": "Please check your email for the verification code and enter it to proceed"
     }
   },
   "error": {
@@ -38,6 +39,9 @@
       "tooShort": "Password must be at least 8 characters long",
       "tooLong": "Password cannot exceed 100 characters",
       "misMatch": "Passwords do not match"
+    },
+    "verificationCode": {
+      "required": "Verification code is required"
     }
   },
   "button": {
@@ -46,7 +50,8 @@
     "verifyEmail": "Verify my email",
     "signOut": "Sign Out",
     "editProfile": "Edit Profile",
-    "changeAvatar": "Change Avatar"
+    "changeAvatar": "Change Avatar",
+    "resetPassword":"Reset password"
   },
   "title": {
     "signUp": "Create an account",
@@ -54,7 +59,8 @@
     "signIn.subTitle": "We are so excited to see you again.",
     "verifyEmail": "Verify your email",
     "settings": "Settings",
-    "appearance": "Appearance"
+    "appearance": "Appearance",
+    "resetPassword": "Reset password"
   },
   "label": {
     "accountInformation": "Account Information",
@@ -66,7 +72,8 @@
     "password2": "Confirm Password",
     "verifyCode": "Verification Code",
     "forgotPassword": "Forgot your password?",
-    "aboutMe": "About Me"
+    "aboutMe": "About Me",
+    "newPassword": "New Password"
   },
   "placeholder": {
     "email": "Enter your email address",
@@ -76,7 +83,8 @@
     "lastName": "Enter your last name",
     "password2": "Re-enter your password",
     "verifyCode": "Enter the verification code sent to your email",
-    "aboutMe": "Hello everyone..."
+    "aboutMe": "Hello everyone...",
+    "newPassword": "Enter your new password"
   },
   "tab": {
     "gallery": "Gallery",

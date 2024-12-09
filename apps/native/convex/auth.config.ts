@@ -1,8 +1,8 @@
 export default {
   providers: [
     {
-      domain: "https://true-oriole-29.clerk.accounts.dev",
+      domain: "https://intense-hare-81.clerk.accounts.dev",
       applicationID: "convex",
     },
-  ]
+  ],
 };
