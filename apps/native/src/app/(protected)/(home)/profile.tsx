@@ -11,20 +11,19 @@ import { useAuth, useUser } from "@clerk/clerk-expo";
 import AboutMe from "@/features/user/components/AboutMe";
 import Avatar from "@/features/user/components/Avatar";
 import { useTranslation } from "react-i18next";
+import { useUserProfile } from "@/hooks/useUserProfile";
 
 export default function TabsScreen() {
   const { t } = useTranslation();
   const { signOut } = useAuth();
-  const { user } = useUser();
+  const { userProfile } = useUserProfile();
 
-  if (!user) return null;
-
-  const description = user.publicMetadata.description as string | undefined;
-  const username = user.username as string;
-  const firstName = user.firstName as string;
-  const lastName = user.lastName as string;
-  const userId = user.id;
-  const avatar = user.imageUrl;
+  const description = userProfile?.description;
+  const username = userProfile?.username as string;
+  const firstName = userProfile?.first_name as string;
+  const lastName = userProfile?.last_name as string;
+  const avatar = userProfile?.image_url as string;
+  const createdAt = userProfile?._creationTime as number;
 
   async function onSignOut() {
     await signOut();
@@ -62,7 +61,7 @@ export default function TabsScreen() {
           </View>
           <View className="w-11/12">
             <AboutMe
-              memberSince={user?.createdAt ? user.createdAt : new Date()}
+              memberSince={createdAt ? new Date(createdAt) : new Date()}
               description={description}
             />
           </View>

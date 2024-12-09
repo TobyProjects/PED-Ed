@@ -22,12 +22,13 @@ import * as ImagePicker from "expo-image-picker";
 import { ArrowLeft } from "@/components/icons/ArrowLeft";
 import { useColorScheme } from "@/hooks/useColorScheme";
 import { NAV_THEME } from "@/constants/Themes";
+import { useUserProfile } from "@/hooks/useUserProfile";
 
 export default function () {
   const navigation = useNavigation();
   const router = useRouter();
   const { t } = useTranslation();
-  const { user } = useUser();
+  const { userProfile } = useUserProfile();
   const { colorScheme } = useColorScheme();
 
   useEffect(() => {
@@ -52,15 +53,13 @@ export default function () {
     });
   }, [navigation]);
 
-  if (!user) return null;
-
-  const username = user.username as string;
-  const firstName = user.firstName as string;
-  const lastName = user.lastName as string;
-  const aboutMe = user.publicMetadata.description
-    ? (user.publicMetadata.description as string)
+  const username = userProfile?.username as string;
+  const firstName = userProfile?.first_name as string;
+  const lastName = userProfile?.last_name as string;
+  const aboutMe = userProfile?.description
+    ? (userProfile?.description as string)
     : "";
-  const avatar = user.imageUrl;
+  const avatar = userProfile?.image_url;
 
   const { control, handleSubmit } = useForm({
     defaultValues: {
@@ -110,7 +109,9 @@ export default function () {
                 </AvatarFallback>
               </Avatar>
               <Button onPress={() => changeAvatar()} className="rounded-full">
-                <Text className="text-foreground">{t("button.changeAvatar")}</Text>
+                <Text className="text-foreground">
+                  {t("button.changeAvatar")}
+                </Text>
               </Button>
               <View className="w-11/12">
                 <Label className="text-muted-foreground font-bold">
