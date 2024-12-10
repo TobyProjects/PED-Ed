@@ -5,6 +5,7 @@ import {
   ScrollView,
   Keyboard,
   Platform,
+  TouchableWithoutFeedback,
 } from "react-native";
 import React, { useEffect, useState } from "react";
 import { SafeAreaView } from "react-native-safe-area-context";
@@ -18,7 +19,6 @@ import { yupResolver } from "@hookform/resolvers/yup";
 import { Button } from "@/components/ui/button";
 import { useSignUp } from "@clerk/clerk-expo";
 import { toast } from "sonner-native";
-import { TouchableWithoutFeedback } from "react-native-gesture-handler";
 
 const schema = Yup.object({
   code: Yup.string().required("form.error.verificationCode.required"),
@@ -74,45 +74,52 @@ export default function VerifyEmail() {
           behavior={Platform.OS == "ios" ? "padding" : "height"}
         >
           <ScrollView
-            className="w-11/12 mx-auto mt-12 h-full"
+            className="w-full h-full"
             keyboardShouldPersistTaps="handled"
           >
-            <Text className="text-foreground text-center font-uniSansHeavy text-5xl font-bold">
-              {t("title.verifyEmail")}
-            </Text>
+            <View className="my-12">
+              <View className="w-11/12 mx-auto">
+                <Text className="text-foreground text-center font-bold text-5xl font-uniSansHeavy">
+                  {t("title.verifyEmail")}
+                </Text>
+                <View className="mt-12">
+                  <View className="flex gap-3">
+                    <View>
+                      <Label nativeID="code" className="font-bold">
+                        {t("label.verifyCode")}
+                      </Label>
+                      <Controller
+                        control={control}
+                        name="code"
+                        render={({ field: { onChange, onBlur, value } }) => (
+                          <Input
+                            inputMode="numeric"
+                            aria-labelledby="code"
+                            onChangeText={onChange}
+                            onBlur={onBlur}
+                            value={value}
+                          />
+                        )}
+                      />
+                      {errors && errors["code"] && (
+                        <Label className="text-destructive" nativeID="code">
+                          {t(errors["code"].message!!)}
+                        </Label>
+                      )}
+                    </View>
 
-            <View className="mt-6">
-              <Label nativeID="code" className="font-semibold">
-                {t("label.verifyCode")}
-              </Label>
-              <Controller
-                control={control}
-                name="code"
-                render={({ field: { onChange, onBlur, value } }) => (
-                  <Input
-                    placeholder={"Code"}
-                    inputMode="text"
-                    aria-labelledby="code"
-                    onChangeText={onChange}
-                    onBlur={onBlur}
-                    value={value}
-                    className="mt-1"
-                  />
-                )}
-              />
-              {errors && errors["code"] && (
-                <Label className="text-destructive" nativeID="code">
-                  {t(errors["code"].message!!)}
-                </Label>
-              )}
+                    <Button
+                      className="text-foreground"
+                      onPress={handleSubmit(onSubmit)}
+                    >
+                      <Text className="text-foreground">
+                        {t("button.verifyEmail")}
+                      </Text>
+                    </Button>
+                  </View>
+                </View>
+              </View>
             </View>
-            <Button
-              className="text-foreground mt-2"
-              onPress={handleSubmit(onSubmit)}
-              disabled={isLoading}
-            >
-              <Text className="text-foreground">{t("button.verifyEmail")}</Text>
-            </Button>
           </ScrollView>
         </KeyboardAvoidingView>
       </TouchableWithoutFeedback>

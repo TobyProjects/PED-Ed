@@ -1,10 +1,8 @@
 import "@/styles/global.css";
 
 import AsyncStorage from "@react-native-async-storage/async-storage";
-import { Theme } from "@react-navigation/native";
 import { Slot, SplashScreen, useRouter, useSegments } from "expo-router";
 import * as React from "react";
-import { NAV_THEME } from "@/constants/Themes";
 import { useColorScheme } from "@/hooks/useColorScheme";
 import "@/locales/i18n";
 import { useTranslation } from "react-i18next";
@@ -14,17 +12,9 @@ import { GestureHandlerRootView } from "react-native-gesture-handler";
 import { Toaster } from "sonner-native";
 import { ClerkLoaded, ClerkProvider, useAuth } from "@clerk/clerk-expo";
 import { tokenCache } from "@/utils/cache";
-import { ConvexReactClient } from "convex/react";
+import { ConvexReactClient, useConvexAuth } from "convex/react";
 import { ConvexProviderWithClerk } from "convex/react-clerk";
-
-const LIGHT_THEME: Theme = {
-  dark: false,
-  colors: NAV_THEME.light,
-};
-const DARK_THEME: Theme = {
-  dark: true,
-  colors: NAV_THEME.dark,
-};
+import { useEffect } from "react";
 
 export { ErrorBoundary } from "expo-router";
 
@@ -50,7 +40,7 @@ export default function RootLayout() {
     UniSansHeavyRegular: require("@/assets/fonts/UniSansHeavyRegular.ttf"),
   });
 
-  React.useEffect(() => {
+  useEffect(() => {
     async function loadTheme() {
       const theme = await AsyncStorage.getItem("theme");
 
@@ -98,19 +88,21 @@ export default function RootLayout() {
   }
 
   function InitialLayout() {
-    const { isSignedIn } = useAuth();
+    const { isLoading, isAuthenticated } = useConvexAuth();
     const segments = useSegments();
     const router = useRouter();
 
     React.useEffect(() => {
       const isInProtectedGroup = segments[0] === "(protected)";
 
-      if (isSignedIn && !isInProtectedGroup) {
+      if (isAuthenticated && !isInProtectedGroup) {
         router.replace("/(protected)/(home)");
-      } else if (!isSignedIn) {
+      } else if (!isAuthenticated) {
         router.replace("/(public)");
       }
-    }, [isSignedIn]);
+    }, [isAuthenticated]);
+
+    if(isLoading) return null;
 
     return (
       <GestureHandlerRootView>

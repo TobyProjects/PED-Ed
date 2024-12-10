@@ -1,65 +1,67 @@
-import { v } from "convex/values";
-import { internalMutation, mutation, query } from "./_generated/server";
+import { v, Validator } from "convex/values";
+import { internalMutation, QueryCtx } from "./_generated/server";
+import { UserJSON } from "@clerk/backend";
 import { Id } from "./_generated/dataModel";
 
-export const getUserByClerkId = query({
-  args: {
-    clerkId: v.optional(v.string()),
-  },
-  handler: async (ctx, args) => {
-    const user = await ctx.db
-      .query("users")
-      .filter((q) => q.eq(q.field("clerk_id"), args.clerkId))
-      .unique();
+export const upsertFromClerk = internalMutation({
+  args: { data: v.any() as Validator<UserJSON> },
+  async handler(ctx, { data }) {
+    const user = await getUserByClerkId(ctx, data.id);
 
-    /**
-     * if (!user?.image_url || user.image_url.startsWith("http")) {
-      return user;
+    if (user === null) {
+      await ctx.db.insert("users", {
+        clerk_id: data.id,
+        email: data.email_addresses[0].email_address,
+        username: data.username!,
+        first_name: data.first_name!,
+        last_name: data.last_name!,
+        description: "",
+        image_url: data.image_url,
+        streak: 0,
+        sets: [],
+      });
+    } else {
+      await ctx.db.patch(user._id, {
+        clerk_id: data.id,
+        email: data.email_addresses[0].email_address,
+        username: data.username!,
+        first_name: data.first_name!,
+        last_name: data.last_name!,
+        image_url: data.image_url,
+      });
     }
-
-    const url = await ctx.storage.getUrl(user.image_url as Id<"_storage">);
-     */
-
-    return {
-      ...user,
-    };
   },
 });
 
-export const getUserById = query({
-  args: {
-    userId: v.id("users"),
-  },
-  handler: async (ctx, args) => {
-    const user = await ctx.db.get(args.userId);
-    if (!user?.image_url || user.image_url.startsWith("http")) {
-      return user;
-    }
+// Helpers
 
-    const url = await ctx.storage.getUrl(user.image_url as Id<"_storage">);
+async function getUserByClerkId(ctx: QueryCtx, clerkId: string) {
+  return await ctx.db
+    .query("users")
+    .withIndex("by_clerk_id", (q) => q.eq("clerk_id", clerkId))
+    .unique();
+}
 
-    return {
-      ...user,
-      image_url: url,
-    };
-  },
-});
+/**
+ * Get user by their id in Convex database
+ */
+async function getUserById(ctx: QueryCtx, id: Id<"users">) {
+  return await ctx.db.get(id);
+}
 
-export const createUser = internalMutation({
-  args: {
-    clerk_id: v.string(),
-    email: v.string(),
-    first_name: v.string(),
-    last_name: v.string(),
-    username: v.string(),
-    description: v.optional(v.string()),
-    image_url: v.optional(v.string()),
-    streak: v.number(),
-    sets: v.array(v.id("sets")),
-  },
-  handler: async (ctx, args) => {
-    const userId = await ctx.db.insert("users", { ...args });
+async function getCurrentUser(ctx: QueryCtx) {
+  const currentIdentify = await ctx.auth.getUserIdentity();
+  if (!currentIdentify) {
+    return null;
+  }
+  return await getUserByClerkId(ctx, currentIdentify.subject);
+}
 
-    return userId;
-  },
-});
+/**
+ * Always return an user
+ */
+async function getCurrentUserSafe(ctx: QueryCtx) {
+  const user = await getCurrentUser(ctx);
+  if (!user) throw new Error("Can't get current user");
+  return user;
+}
