@@ -23,6 +23,9 @@ import { ArrowLeft } from "@/components/icons/ArrowLeft";
 import { useColorScheme } from "@/hooks/useColorScheme";
 import { NAV_THEME } from "@/constants/Themes";
 import { useUserProfile } from "@/hooks/useUserProfile";
+import { toast } from "sonner-native";
+import { useMutation, useQuery } from "convex/react";
+import { api } from "../../../../convex/_generated/api";
 
 export default function () {
   const navigation = useNavigation();
@@ -30,6 +33,7 @@ export default function () {
   const { t } = useTranslation();
   const { userProfile } = useUserProfile();
   const { colorScheme } = useColorScheme();
+  const { user } = useUser();
 
   useEffect(() => {
     navigation.setOptions({
@@ -70,10 +74,38 @@ export default function () {
     },
   });
 
-  const [userAvatar, setUserAvatar] = useState<string>("");
+  const [userAvatar, setUserAvatar] = useState<Blob | null>(null);
+  const [avatarUri, setAvatarUri] = useState<string>("");
+
+  const setDescription = useMutation(api.users.setDescription);
+  const generateUploadUrl = useMutation(api.users.generateUploadUrl);
+  const updateUserAvatar = useMutation(api.users.updateUserAvatar);
+  const userGotByUsername = useQuery(api.users.getUserByUsername, { username });
 
   async function onSubmit({ firstName, lastName, username, aboutMe }: any) {
-    console.log(firstName, lastName, username, aboutMe);
+    await user?.update({
+      firstName,
+      lastName,
+      username,
+    });
+    await setDescription({ content: aboutMe });
+
+    if (userAvatar != null) {
+      const url = await generateUploadUrl();
+
+      const result = await fetch(url, {
+        method: "POST",
+        headers: {
+          "Content-Type": userAvatar.type,
+        },
+        body: userAvatar,
+      });
+
+      const { storageId } = await result.json();
+      await updateUserAvatar({ storageId, _id: userGotByUsername?._id! });
+    }
+
+    toast.success(t("alert.user.profileUpdated"));
   }
 
   async function changeAvatar() {
@@ -86,7 +118,10 @@ export default function () {
 
     if (result.canceled) return;
 
-    setUserAvatar(result.assets[0].uri);
+    const blob = await (await fetch(result.assets[0].uri)).blob();
+
+    setUserAvatar(blob);
+    setAvatarUri(result.assets[0].uri);
   }
 
   return (
@@ -102,7 +137,7 @@ export default function () {
             <View className="w-11/12 border border-border mx-auto mt-12 rounded-xl flex items-center justify-center gap-3 py-6">
               <Avatar alt="User Avatar" className="w-32 h-32">
                 <AvatarImage
-                  source={{ uri: userAvatar.length == 0 ? avatar : userAvatar }}
+                  source={{ uri: userAvatar == null ? avatar : avatarUri }}
                 />
                 <AvatarFallback>
                   <Text>Avatar</Text>

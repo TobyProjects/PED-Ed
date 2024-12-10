@@ -102,8 +102,6 @@ export default function RootLayout() {
       }
     }, [isAuthenticated]);
 
-    if(isLoading) return null;
-
     return (
       <GestureHandlerRootView>
         <Slot />

@@ -13,6 +13,9 @@
     "email": {
       "verificationSent": "We sent a verification code to your email",
       "resetPasswordCodeSent": "Please check your email for the verification code and enter it to proceed"
+    },
+    "user": {
+      "profileUpdated": "Profile updated"
     }
   },
   "error": {

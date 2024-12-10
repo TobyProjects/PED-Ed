@@ -30,7 +30,11 @@ export const Flashcard = {
 };
 
 export default defineSchema({
-  users: defineTable(User).index("by_clerk_id", ["clerk_id"]),
+  users: defineTable(User)
+    .index("by_clerk_id", ["clerk_id"])
+    .searchIndex("searchUsers", {
+      searchField: "username",
+    }),
   sets: defineTable(Set),
   flashcards: defineTable(Flashcard),
 });

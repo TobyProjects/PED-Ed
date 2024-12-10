@@ -7,7 +7,7 @@ import { Cog } from "@/components/icons/Cog";
 import { Pencil } from "@/components/icons/Pencil";
 import { router } from "expo-router";
 import { LogOut } from "@/components/icons/LogOut";
-import { useAuth, useUser } from "@clerk/clerk-expo";
+import { useAuth } from "@clerk/clerk-expo";
 import AboutMe from "@/features/user/components/AboutMe";
 import Avatar from "@/features/user/components/Avatar";
 import { useTranslation } from "react-i18next";

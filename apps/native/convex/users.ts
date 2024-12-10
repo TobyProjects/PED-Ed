@@ -1,12 +1,84 @@
 import { v, Validator } from "convex/values";
-import { internalMutation, QueryCtx } from "./_generated/server";
+import {
+  internalMutation,
+  mutation,
+  query,
+  QueryCtx,
+} from "./_generated/server";
 import { UserJSON } from "@clerk/backend";
 import { Id } from "./_generated/dataModel";
 
+// Query
+
+export const getUserByUsername = query({
+  args: {
+    username: v.string(),
+  },
+  handler: async (ctx, { username }) => {
+    const user = await ctx.db
+      .query("users")
+      .withSearchIndex("searchUsers", (q) => q.search("username", username))
+      .unique();
+
+    if (!user?.image_url || user.image_url.startsWith("http")) {
+      return user;
+    }
+
+    const url = await ctx.storage.getUrl(user.image_url as Id<"_storage">);
+    user.image_url = url!;
+    return user;
+  },
+});
+
+export const getUserByClerkId = query({
+  args: {
+    clerk_id: v.string(),
+  },
+  handler: async (ctx, { clerk_id }) => {
+    const user = await ctx.db
+      .query("users")
+      .filter((q) => q.eq(q.field("clerk_id"), clerk_id))
+      .unique();
+
+    if (!user?.image_url || user.image_url.startsWith("http")) {
+      return user;
+    }
+
+    const url = await ctx.storage.getUrl(user.image_url as Id<"_storage">);
+    user.image_url = url!;
+
+    return user;
+  },
+});
+
+// Mutations
+
+export const updateUserAvatar = mutation({
+  args: { storageId: v.id("_storage"), _id: v.id("users") },
+  handler: async (ctx, { storageId, _id }) => {
+    await ctx.db.patch(_id, { image_url: storageId });
+  },
+});
+
+export const generateUploadUrl = mutation(async (ctx) => {
+  await localGetCurrentUserSafe(ctx); // Only allowed logged in users
+
+  return await ctx.storage.generateUploadUrl();
+});
+
+export const setDescription = mutation({
+  args: { content: v.string() },
+  handler: async (ctx, { content }) => {
+    const user = await localGetCurrentUserSafe(ctx);
+    await ctx.db.patch(user._id, { description: content });
+  },
+});
+
+// Internal mutations
 export const upsertFromClerk = internalMutation({
   args: { data: v.any() as Validator<UserJSON> },
   async handler(ctx, { data }) {
-    const user = await getUserByClerkId(ctx, data.id);
+    const user = await localGetUserByClerkId(ctx, data.id);
 
     if (user === null) {
       await ctx.db.insert("users", {
@@ -33,9 +105,23 @@ export const upsertFromClerk = internalMutation({
   },
 });
 
+/** Delete a user by Clerk id */
+export const deleteUser = internalMutation({
+  args: { id: v.string() },
+  async handler(ctx, { id }) {
+    const user = await getUserByClerkId(ctx, id);
+
+    if (user === null) {
+      console.warn("Can't delete user, does not exist", id);
+    } else {
+      await ctx.db.delete(user._id);
+    }
+  },
+});
+
 // Helpers
 
-async function getUserByClerkId(ctx: QueryCtx, clerkId: string) {
+async function localGetUserByClerkId(ctx: QueryCtx, clerkId: string) {
   return await ctx.db
     .query("users")
     .withIndex("by_clerk_id", (q) => q.eq("clerk_id", clerkId))
@@ -45,23 +131,23 @@ async function getUserByClerkId(ctx: QueryCtx, clerkId: string) {
 /**
  * Get user by their id in Convex database
  */
-async function getUserById(ctx: QueryCtx, id: Id<"users">) {
+async function localGetUserById(ctx: QueryCtx, id: Id<"users">) {
   return await ctx.db.get(id);
 }
 
-async function getCurrentUser(ctx: QueryCtx) {
+async function localGetCurrentUser(ctx: QueryCtx) {
   const currentIdentify = await ctx.auth.getUserIdentity();
   if (!currentIdentify) {
     return null;
   }
-  return await getUserByClerkId(ctx, currentIdentify.subject);
+  return await localGetUserByClerkId(ctx, currentIdentify.subject);
 }
 
 /**
  * Always return an user
  */
-async function getCurrentUserSafe(ctx: QueryCtx) {
-  const user = await getCurrentUser(ctx);
+async function localGetCurrentUserSafe(ctx: QueryCtx) {
+  const user = await localGetCurrentUser(ctx);
   if (!user) throw new Error("Can't get current user");
   return user;
 }

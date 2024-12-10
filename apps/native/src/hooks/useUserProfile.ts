@@ -6,7 +6,13 @@ export function useUserProfile() {
   const { user } = useUser();
   const clerkId = user?.id;
 
-  const userProfile = useQuery(api.users.getUserByClerkId, { clerkId });
+  if (!clerkId) {
+    throw new Error("User is not logged in");
+  }
+
+  const userProfile = useQuery(api.users.getUserByClerkId, {
+    clerk_id: clerkId,
+  });
 
   return { userProfile };
 }
