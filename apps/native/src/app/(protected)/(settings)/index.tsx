@@ -23,7 +23,6 @@ interface SettingItem {
 
 const accountSettings: SettingItem[] = [
   { id: "account", name: "Account", icon: User },
-  { id: "privacy", name: "Privacy & Safety", icon: Shield },
 ];
 
 const appSettings: SettingItem[] = [

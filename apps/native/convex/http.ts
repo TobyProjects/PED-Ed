@@ -24,6 +24,9 @@ export const handleClerkWebhook = httpAction(async (ctx, req) => {
       break;
     }
     case "user.deleted": {
+      await ctx.runMutation(internal.users.deleteUser, {
+        id: event.data.id!,
+      })
       break;
     }
     default: {

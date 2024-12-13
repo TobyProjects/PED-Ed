@@ -15,7 +15,11 @@
       "resetPasswordCodeSent": "Please check your email for the verification code and enter it to proceed"
     },
     "user": {
-      "profileUpdated": "Profile updated"
+      "profileUpdated": "Profile updated",
+      "usernameUpdated": "Username updated"
+    },
+    "password": {
+      "updated": "Password updated"
     }
   },
   "error": {
@@ -54,7 +58,9 @@
     "signOut": "Sign Out",
     "editProfile": "Edit Profile",
     "changeAvatar": "Change Avatar",
-    "resetPassword":"Reset password"
+    "resetPassword":"Reset password",
+    "changePassword":"Change My Password",
+    "deleteMyAccount":"Delete My Account",
   },
   "title": {
     "signUp": "Create an account",
@@ -63,7 +69,9 @@
     "verifyEmail": "Verify your email",
     "settings": "Settings",
     "appearance": "Appearance",
-    "resetPassword": "Reset password"
+    "resetPassword": "Reset password",
+    "privacy&safety": "Privacy & Safety",
+    "account": "Account"
   },
   "label": {
     "accountInformation": "Account Information",
@@ -76,7 +84,11 @@
     "verifyCode": "Verification Code",
     "forgotPassword": "Forgot your password?",
     "aboutMe": "About Me",
-    "newPassword": "New Password"
+    "newPassword": "New Password",
+    "oldPassword": "Old Password",
+    "changePassword": "Change My Password",
+    "accountManagement": "Account Management",
+    "security": "Security"
   },
   "placeholder": {
     "email": "Enter your email address",

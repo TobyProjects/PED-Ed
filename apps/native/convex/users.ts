@@ -99,7 +99,6 @@ export const upsertFromClerk = internalMutation({
         username: data.username!,
         first_name: data.first_name!,
         last_name: data.last_name!,
-        image_url: data.image_url,
       });
     }
   },
@@ -109,12 +108,16 @@ export const upsertFromClerk = internalMutation({
 export const deleteUser = internalMutation({
   args: { id: v.string() },
   async handler(ctx, { id }) {
-    const user = await getUserByClerkId(ctx, id);
+    const user = await getUserByClerkId(ctx, { clerk_id: id });
 
     if (user === null) {
       console.warn("Can't delete user, does not exist", id);
     } else {
       await ctx.db.delete(user._id);
+
+      if (!user.image_url.startsWith("http")) {
+        await ctx.storage.delete(user.image_url as Id<"_storage">); // TODO: Investigate this
+      }
     }
   },
 });
