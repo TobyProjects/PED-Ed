@@ -5,18 +5,20 @@ import { Text } from "@/components/ui/text";
 import { SafeAreaView } from "react-native-safe-area-context";
 import { Cog } from "@/components/icons/Cog";
 import { Pencil } from "@/components/icons/Pencil";
-import { router } from "expo-router";
+import { router, useNavigation } from "expo-router";
 import { LogOut } from "@/components/icons/LogOut";
 import { useAuth } from "@clerk/clerk-expo";
 import AboutMe from "@/features/user/components/AboutMe";
 import Avatar from "@/features/user/components/Avatar";
 import { useTranslation } from "react-i18next";
 import { useUserProfile } from "@/hooks/useUserProfile";
+import { useEffect } from "react";
 
 export default function TabsScreen() {
   const { t } = useTranslation();
   const { signOut } = useAuth();
   const { userProfile } = useUserProfile();
+  const navigation = useNavigation();
 
   const description = userProfile?.description;
   const username = userProfile?.username as string;
@@ -29,17 +31,27 @@ export default function TabsScreen() {
     await signOut();
   }
 
+  useEffect(() => {
+    navigation.setOptions({
+      headerTitle: () => (
+        <Text className="text-foreground text-xl font-semibold">
+          {t("tab.profile")}
+        </Text>
+      ),
+      headerRight: () => (
+        <Pressable
+          className="p-3"
+          onPress={() => router.push("/(protected)/(settings)")}
+        >
+          <Cog className="text-primary" />
+        </Pressable>
+      ),
+    });
+  }, [navigation]);
+
   return (
     <ScrollView className="bg-background">
       <SafeAreaView className="">
-        <View className="flex items-end">
-          <Pressable
-            className="p-3"
-            onPress={() => router.push("/(protected)/(settings)")}
-          >
-            <Cog className="text-primary" />
-          </Pressable>
-        </View>
         <View className="flex gap-8 justify-center items-center mt-24">
           <Avatar
             firstName={firstName}

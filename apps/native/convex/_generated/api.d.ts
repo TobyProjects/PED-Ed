@@ -13,7 +13,9 @@ import type {
   FilterApi,
   FunctionReference,
 } from "convex/server";
+import type * as flashcards from "../flashcards.js";
 import type * as http from "../http.js";
+import type * as sets from "../sets.js";
 import type * as users from "../users.js";
 
 /**
@@ -25,7 +27,9 @@ import type * as users from "../users.js";
  * ```
  */
 declare const fullApi: ApiFromModules<{
+  flashcards: typeof flashcards;
   http: typeof http;
+  sets: typeof sets;
   users: typeof users;
 }>;
 export declare const api: FilterApi<

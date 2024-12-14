@@ -4,6 +4,8 @@ import { Timer } from "@/components/icons/Timer";
 import { User } from "@/components/icons/User";
 import { WalletCards } from "@/components/icons/WalletCards";
 import TabBar from "@/components/TabBar";
+import { NAV_THEME } from "@/constants/Themes";
+import { useColorScheme } from "@/hooks/useColorScheme";
 import { useAuth } from "@clerk/clerk-expo";
 import { Tabs, useNavigation } from "expo-router";
 import React, { useEffect } from "react";
@@ -11,20 +13,19 @@ import { useTranslation } from "react-i18next";
 
 export default function ProtectedLayout() {
   const { t } = useTranslation();
-  const navigation = useNavigation();
   const { isSignedIn } = useAuth();
-
-  useEffect(() => {
-    navigation.setOptions({
-      headerTransparent: true,
-      headerTitle: "",
-      headerLeft: () => null,
-    });
-  }, [navigation]);
+  const { colorScheme } = useColorScheme();
 
   return (
     <Tabs
-      screenOptions={{ headerShown: false }}
+      screenOptions={{
+        headerStyle: {
+          backgroundColor:
+            colorScheme == "dark"
+              ? NAV_THEME.dark.background
+              : NAV_THEME.light.background,
+        },
+      }}
       tabBar={(props) => <TabBar {...props} />}
     >
       <Tabs.Screen

@@ -35,6 +35,6 @@ export default defineSchema({
     .searchIndex("searchUsers", {
       searchField: "username",
     }),
-  sets: defineTable(Set),
+  sets: defineTable(Set).index("by_user", ["owner"]),
   flashcards: defineTable(Flashcard),
 });

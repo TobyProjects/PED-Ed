@@ -20,6 +20,12 @@
     },
     "password": {
       "updated": "Password updated"
+    },
+    "set": {
+      "created": "Set created"
+    },
+    "flashcard": {
+      "created": "Flashcard created"
     }
   },
   "error": {
@@ -49,6 +55,14 @@
     },
     "verificationCode": {
       "required": "Verification code is required"
+    },
+    "flashcard": {
+      "termRequired": "Term is required",
+      "definitionRequired": "Definition is required",
+      "setRequired": "Set is required"
+    },
+    "set": {
+      "nameRequired": "Set name is required"
     }
   },
   "button": {
@@ -58,9 +72,11 @@
     "signOut": "Sign Out",
     "editProfile": "Edit Profile",
     "changeAvatar": "Change Avatar",
-    "resetPassword":"Reset password",
-    "changePassword":"Change My Password",
-    "deleteMyAccount":"Delete My Account",
+    "resetPassword": "Reset password",
+    "changePassword": "Change My Password",
+    "deleteMyAccount": "Delete My Account",
+    "addFlashcard": "Add Flashcard",
+    "createSet": "Create Set"
   },
   "title": {
     "signUp": "Create an account",
@@ -71,9 +87,14 @@
     "appearance": "Appearance",
     "resetPassword": "Reset password",
     "privacy&safety": "Privacy & Safety",
-    "account": "Account"
+    "account": "Account",
+    "createAFlashcard": "Create a Flashcard",
+    "createASet": "Create a Set"
   },
   "label": {
+    "term": "Term",
+    "definition": "Definition",
+    "image": "Image",
     "accountInformation": "Account Information",
     "email": "Email",
     "password": "Password",
@@ -88,7 +109,8 @@
     "oldPassword": "Old Password",
     "changePassword": "Change My Password",
     "accountManagement": "Account Management",
-    "security": "Security"
+    "security": "Security",
+    "set": "Set"
   },
   "placeholder": {
     "email": "Enter your email address",
@@ -99,7 +121,9 @@
     "password2": "Re-enter your password",
     "verifyCode": "Enter the verification code sent to your email",
     "aboutMe": "Hello everyone...",
-    "newPassword": "Enter your new password"
+    "newPassword": "Enter your new password",
+    "setName": "Enter the name of the set",
+    "setDescription": "Description is optional"
   },
   "tab": {
     "gallery": "Gallery",
@@ -107,5 +131,9 @@
     "home": "Home",
     "pomodoro": "Pomodoro",
     "profile": "Profile"
+  },
+  "input": {
+    "selectSet": "Please select an existing set or create a new one",
+    "canCreateANewSet": "You can create a new set also"
   }
 }
