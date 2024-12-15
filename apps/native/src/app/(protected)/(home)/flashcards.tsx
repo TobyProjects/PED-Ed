@@ -12,20 +12,33 @@ import { useUser } from "@clerk/clerk-expo";
 import { Id } from "../../../../convex/_generated/dataModel";
 import { ChevronRight } from "@/components/icons/ChevronRight";
 import filter from "lodash/filter";
+import {
+  useQuery as useTanstackQuery,
+  useMutation as useTanstackMutation,
+} from "@tanstack/react-query";
+import { convexQuery, useConvexMutation } from "@convex-dev/react-query";
 
 export default function () {
   const { t } = useTranslation();
   const navigation = useNavigation();
   const router = useRouter();
   const { user } = useUser();
-  const userId = useQuery(api.users.getUserByClerkId, {
-    clerk_id: user?.id!,
-  })?._id as Id<"users">;
-  const sets = useQuery(api.sets.getSets, {
-    userId,
-  });
   const [searchedSets, setSearchedSets] = useState<any[]>([]);
-  const getCardCount = useMutation(api.flashcards.getCardCount);
+
+  const countCards = useTanstackMutation({
+    mutationKey: ["countCards"],
+    mutationFn: useConvexMutation(api.flashcards.getCardCount),
+  });
+
+  const usersQuery = useTanstackQuery(
+    convexQuery(api.users.getUserByClerkId, {
+      clerk_id: user?.id!,
+    }),
+  );
+  const userId = usersQuery.data?._id as Id<"users">;
+
+  const setsQuery = useTanstackQuery(convexQuery(api.sets.getSets, { userId }));
+  const sets = setsQuery.data;
 
   useEffect(() => {
     navigation.setOptions({
@@ -56,7 +69,8 @@ export default function () {
       if (sets) {
         const updatedSets = await Promise.all(
           sets.map(async (set) => {
-            const cardCount = await getCardCount({ setId: set._id });
+            const cardCount = await countCards.mutateAsync({ setId: set._id });
+
             return { ...set, cardCount };
           }),
         );
@@ -87,22 +101,24 @@ export default function () {
           />
 
           <View className="mt-12">
-            <FlashList
-              data={searchedSets}
-              renderItem={({ item }) => (
-                <FlashCardSetItem
-                  name={item.name}
-                  description={item.description}
-                  cardCount={item.cardCount}
-                  onPress={() => {
-                    router.replace(
-                      `/(protected)/flashcard/${item._id}`,
-                    );
-                  }}
-                />
-              )}
-              estimatedItemSize={200}
-            />
+            {usersQuery.isPending || setsQuery.isPending ? (
+              <Text className="text-foreground text-center">Loading...</Text>
+            ) : (
+              <FlashList
+                data={searchedSets}
+                renderItem={({ item }) => (
+                  <FlashCardSetItem
+                    name={item.name}
+                    description={item.description}
+                    cardCount={item.cardCount}
+                    onPress={() => {
+                      router.replace(`/(protected)/flashcard/${item._id}`);
+                    }}
+                  />
+                )}
+                estimatedItemSize={200}
+              />
+            )}
           </View>
         </View>
       </View>

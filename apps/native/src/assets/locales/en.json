@@ -77,7 +77,8 @@
     "changePassword": "Change My Password",
     "deleteMyAccount": "Delete My Account",
     "addFlashcard": "Add Flashcard",
-    "createSet": "Create Set"
+    "createSet": "Create Set",
+    "uploadImage": "Upload Image"
   },
   "title": {
     "signUp": "Create an account",

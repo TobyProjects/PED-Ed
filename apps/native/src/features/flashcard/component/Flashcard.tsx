@@ -1,4 +1,4 @@
-import { View } from "react-native";
+import { Dimensions, Image, View } from "react-native";
 import React from "react";
 import { Text } from "@/components/ui/text";
 import Animated, {
@@ -13,11 +13,13 @@ interface FlashcardProps {
   duration: number;
   term: string;
   definition: string;
+  image: string | null;
 }
 
 export default function ({
   term,
   definition,
+  image,
   duration,
   isFlipped,
   direction,
@@ -54,6 +56,14 @@ export default function ({
         className="absolute border border-border rounded-lg h-full w-full flex items-center justify-center"
         style={[regularCardAnimatedStyle]}
       >
+        {image != null && image != "" ? (
+          <Image
+            source={{ uri: image }}
+            width={Dimensions.get("window").width * 0.45}
+            height={Dimensions.get("window").height * 0.45}
+            style={{ resizeMode: "contain" }}
+          />
+        ) : null}
         <Text className="text-foreground p-3">{term}</Text>
       </Animated.View>
       <Animated.View

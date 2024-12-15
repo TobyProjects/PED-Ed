@@ -1,15 +1,30 @@
 import { v } from "convex/values";
 import { mutation, query } from "./_generated/server";
+import { Id } from "./_generated/dataModel";
 
 // Query
 
 export const getFlashcards = query({
   args: { setId: v.id("sets") },
   handler: async (ctx, { setId }) => {
-    return await ctx.db
+    const flashcards = await ctx.db
       .query("flashcards")
       .withIndex("by_set", (q) => q.eq("set_id", setId))
       .collect();
+
+    const processedFlashcards = await Promise.all(
+      flashcards.map(async (flashcard) => {
+        if (flashcard.image_url && !flashcard.image_url.startsWith("http")) {
+          const url = await ctx.storage.getUrl(
+            flashcard.image_url as Id<"_storage">,
+          );
+          flashcard.image_url = url!;
+        }
+        return flashcard;
+      }),
+    );
+
+    return processedFlashcards;
   },
 });
 

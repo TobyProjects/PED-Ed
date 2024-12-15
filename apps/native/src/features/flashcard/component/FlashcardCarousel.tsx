@@ -33,8 +33,9 @@ export default function ({ flashcards }: { flashcards: any }) {
         renderItem={(card) => (
           <Pressable onPress={() => setIsFlipped(!isFlipped)}>
             <Flashcard
-              term={card.item.term}
-              definition={card.item.definition}
+              term={(card.item as any).term}
+              definition={(card.item as any).definition}
+              image={(card.item as any).image_url}
               isFlipped={isFlipped}
               direction={"x"}
               duration={300}
@@ -45,7 +46,7 @@ export default function ({ flashcards }: { flashcards: any }) {
       <View className="mt-6">
         <Pagination.Basic
           progress={progress}
-          data={["defaultDataWith6Colors", "3", "4"]}
+          data={flashcards ?? []}
           dotStyle={{ backgroundColor: "#9eb0ff" }}
           activeDotStyle={{ backgroundColor: NAV_THEME.dark.primary }}
           containerStyle={{ gap: 5, marginBottom: 10 }}
