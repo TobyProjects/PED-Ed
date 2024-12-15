@@ -1,4 +1,5 @@
-import { Dimensions, Image, View } from "react-native";
+import { Dimensions, View } from "react-native";
+import {Image} from "expo-image";
 import React from "react";
 import { Text } from "@/components/ui/text";
 import Animated, {
@@ -58,7 +59,7 @@ export default function ({
       >
         {image != null && image != "" ? (
           <Image
-            source={{ uri: image }}
+            source={image}
             width={Dimensions.get("window").width * 0.45}
             height={Dimensions.get("window").height * 0.45}
             style={{ resizeMode: "contain" }}
