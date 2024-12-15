@@ -36,5 +36,5 @@ export default defineSchema({
       searchField: "username",
     }),
   sets: defineTable(Set).index("by_user", ["owner"]),
-  flashcards: defineTable(Flashcard),
+  flashcards: defineTable(Flashcard).index("by_set", ["set_id"]),
 });

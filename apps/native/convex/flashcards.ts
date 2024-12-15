@@ -1,7 +1,31 @@
 import { v } from "convex/values";
-import { mutation } from "./_generated/server";
+import { mutation, query } from "./_generated/server";
+
+// Query
+
+export const getFlashcards = query({
+  args: { setId: v.id("sets") },
+  handler: async (ctx, { setId }) => {
+    return await ctx.db
+      .query("flashcards")
+      .withIndex("by_set", (q) => q.eq("set_id", setId))
+      .collect();
+  },
+});
 
 // Mutation
+
+export const getCardCount = mutation({
+  args: { setId: v.id("sets") },
+  handler: async (ctx, { setId }) => {
+    return (
+      await ctx.db
+        .query("flashcards")
+        .withIndex("by_set", (q) => q.eq("set_id", setId))
+        .collect()
+    ).length;
+  },
+});
 
 export const createFlashcard = mutation({
   args: {

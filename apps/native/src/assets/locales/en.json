@@ -6,7 +6,8 @@
   },
   "text": {
     "memberSince": "Member Since",
-    "aboutMe": "About Me"
+    "aboutMe": "About Me",
+    "cardCount": "{{number}} cards"
   },
   "alert": {
     "somethingWentWrong": "Something went wrong",
@@ -123,7 +124,8 @@
     "aboutMe": "Hello everyone...",
     "newPassword": "Enter your new password",
     "setName": "Enter the name of the set",
-    "setDescription": "Description is optional"
+    "setDescription": "Description is optional",
+    "searchFlashcards": "Search flashcards"
   },
   "tab": {
     "gallery": "Gallery",
