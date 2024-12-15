@@ -6,7 +6,17 @@ import { mutation, query } from "./_generated/server";
 export const getSets = query({
   args: { userId: v.id("users") },
   handler: async (ctx, { userId }) => {
-    return await ctx.db.query("sets").withIndex("by_user", (q) => q.eq("owner", userId)).collect();
+    return await ctx.db
+      .query("sets")
+      .withIndex("by_user", (q) => q.eq("owner", userId))
+      .collect();
+  },
+});
+
+export const getSetById = query({
+  args: { setId: v.id("sets") },
+  handler: async (ctx, { setId }) => {
+    return await ctx.db.get(setId);
   },
 });
 

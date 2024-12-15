@@ -58,7 +58,7 @@ export default function () {
           sets.map(async (set) => {
             const cardCount = await getCardCount({ setId: set._id });
             return { ...set, cardCount };
-          })
+          }),
         );
         setSearchedSets(updatedSets);
       }
@@ -94,7 +94,11 @@ export default function () {
                   name={item.name}
                   description={item.description}
                   cardCount={item.cardCount}
-                  onPress={() => {}}
+                  onPress={() => {
+                    router.replace(
+                      `/(protected)/flashcard/${item._id}`,
+                    );
+                  }}
                 />
               )}
               estimatedItemSize={200}
