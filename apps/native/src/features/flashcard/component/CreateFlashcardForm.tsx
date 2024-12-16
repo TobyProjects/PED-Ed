@@ -35,9 +35,9 @@ import { useUser } from "@clerk/clerk-expo";
 import { useQuery } from "convex/react";
 import { api } from "../../../../convex/_generated/api";
 import { Id } from "../../../../convex/_generated/dataModel";
-import { useFlashcardStore } from "@/store/useFlashcardStore";
 import { ImageUp } from "@/components/icons/ImageUp";
 import * as ImagePicker from "expo-image-picker";
+import { useFlashcardImageFormStore } from "@/hooks/store";
 
 export interface CreateFlashcardFormProps {
   control: Control;
@@ -69,7 +69,7 @@ export default function ({
       value: _id,
       label: name,
     })) ?? [];
-  const flashcardStore = useFlashcardStore();
+  const flashcardImageStore = useFlashcardImageFormStore();
 
   async function uploadImage() {
     const result = await ImagePicker.launchImageLibraryAsync({
@@ -83,7 +83,7 @@ export default function ({
 
     const blob = await (await fetch(result.assets[0].uri)).blob();
 
-    flashcardStore.setImage(blob);
+    flashcardImageStore.setImage(blob);
   }
 
   return (
@@ -169,7 +169,7 @@ export default function ({
           <Button
             className="flex-row gap-3"
             onPress={uploadImage}
-            disabled={flashcardStore.image != null}
+            disabled={flashcardImageStore.image != null}
           >
             <ImageUp className="text-foreground" />
             <Text className="text-foreground">{t("button.uploadImage")}</Text>

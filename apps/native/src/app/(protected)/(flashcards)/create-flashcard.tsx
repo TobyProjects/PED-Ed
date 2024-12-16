@@ -13,7 +13,7 @@ import { useMutation, useQuery } from "convex/react";
 import { Id } from "../../../../convex/_generated/dataModel";
 import { api } from "../../../../convex/_generated/api";
 import { toast } from "sonner-native";
-import { useFlashcardStore } from "@/store/useFlashcardStore";
+import { useFlashcardImageFormStore } from "@/hooks/store";
 
 const schema = Yup.object({
   term: Yup.string().required("error.flashcard.termRequired"),
@@ -37,7 +37,7 @@ export default function () {
   });
   const createFlashcard = useMutation(api.flashcards.createFlashcard);
   const generateUploadUrl = useMutation(api.users.generateUploadUrl);
-  const flashcardStore = useFlashcardStore();
+  const flashcardImageStore = useFlashcardImageFormStore();
 
   useEffect(() => {
     navigation.setOptions({
@@ -57,15 +57,15 @@ export default function () {
 
   async function onSubmit(data: Yup.InferType<typeof schema>) {
     try {
-      if (flashcardStore.image != null) {
+      if (flashcardImageStore.image != null) {
         const url = await generateUploadUrl();
 
         const result = await fetch(url, {
           method: "POST",
           headers: {
-            "Content-Type": flashcardStore.image.type,
+            "Content-Type": flashcardImageStore.image.type,
           },
-          body: flashcardStore.image,
+          body: flashcardImageStore.image,
         });
 
         const { storageId } = await result.json();
@@ -85,7 +85,7 @@ export default function () {
         });
       }
 
-      flashcardStore.setImage(null);
+      flashcardImageStore.setImage(null);
       toast.success(t("alert.flashcard.created"));
     } catch (error: any) {
       toast.error(error.message);

@@ -7,7 +7,13 @@
   "text": {
     "memberSince": "Member Since",
     "aboutMe": "About Me",
-    "cardCount": "{{number}} cards"
+    "cardCount": "{{number}} cards",
+    "hiMorning": "Good afternoon {{name}}",
+    "hiAfternoon": "Good morning {{name}}",
+    "hiEvening": "Good evening {{name}}",
+    "morning": "Wishing you a wonderful start to your day!",
+    "afternoon": "Hope your day is going well!",
+    "evening": "Wishing you a peaceful and relaxing evening!"
   },
   "alert": {
     "somethingWentWrong": "Something went wrong",

@@ -4,7 +4,13 @@ import { Text } from "@/components/ui/text";
 import { useNavigation, useRouter } from "expo-router";
 import React, { useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
-import { Pressable, ScrollView, TouchableOpacity, View } from "react-native";
+import {
+  ActivityIndicator,
+  Pressable,
+  ScrollView,
+  TouchableOpacity,
+  View,
+} from "react-native";
 import { FlashList } from "@shopify/flash-list";
 import { useMutation, useQuery } from "convex/react";
 import { api } from "../../../../convex/_generated/api";
@@ -102,7 +108,9 @@ export default function () {
 
           <View className="mt-12">
             {usersQuery.isPending || setsQuery.isPending ? (
-              <Text className="text-foreground text-center">Loading...</Text>
+              <View className="">
+                <ActivityIndicator color={"#3d61ff"} />
+              </View>
             ) : (
               <FlashList
                 data={searchedSets}
