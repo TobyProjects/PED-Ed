@@ -17,13 +17,7 @@ export default function () {
         },
       }}
     >
-      <Stack.Screen name="create-flashcard" />
-      <Stack.Screen name="create-set" options={{ presentation: "modal" }} />
-      <Stack.Screen name="share-flashcard" />
-      <Stack.Screen
-        name="view-share-code"
-        options={{ presentation: "modal" }}
-      />
+      <Stack.Screen name="download-set" />
     </Stack>
   );
 }

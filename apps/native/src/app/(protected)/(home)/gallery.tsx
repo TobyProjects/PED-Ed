@@ -1,6 +1,7 @@
+import { FolderDown } from "@/components/icons/FolderDown";
 import { SquarePlus } from "@/components/icons/SquarePlus";
 import { Text } from "@/components/ui/text";
-import { useNavigation } from "expo-router";
+import { useNavigation, useRouter } from "expo-router";
 import React, { useEffect } from "react";
 import { useTranslation } from "react-i18next";
 import { Pressable, ScrollView } from "react-native";
@@ -8,6 +9,7 @@ import { Pressable, ScrollView } from "react-native";
 export default function () {
   const { t } = useTranslation();
   const navigation = useNavigation();
+  const router = useRouter();
 
   useEffect(() => {
     navigation.setOptions({
@@ -17,8 +19,11 @@ export default function () {
         </Text>
       ),
       headerRight: () => (
-        <Pressable className="p-3" onPress={() => console.log("Add new card")}>
-          <SquarePlus className="text-primary" />
+        <Pressable
+          className="p-3"
+          onPress={() => router.replace("/(protected)/gallery/download-set")}
+        >
+          <FolderDown className="text-primary" />
         </Pressable>
       ),
     });

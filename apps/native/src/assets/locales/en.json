@@ -13,7 +13,9 @@
     "hiEvening": "Good evening {{name}}",
     "morning": "Wishing you a wonderful start to your day!",
     "afternoon": "Hope your day is going well!",
-    "evening": "Wishing you a peaceful and relaxing evening!"
+    "evening": "Wishing you a peaceful and relaxing evening!",
+    "shareCodeIs": "Share code of this flashcard is {{code}}",
+    "shareCodeAttention": "This code will be delete after 10 minutes"
   },
   "alert": {
     "somethingWentWrong": "Something went wrong",
@@ -29,13 +31,17 @@
       "updated": "Password updated"
     },
     "set": {
-      "created": "Set created"
+      "created": "Set created",
+      "imported": "Set imported"
     },
     "flashcard": {
       "created": "Flashcard created"
     }
   },
   "error": {
+    "shareCode": {
+      "codeNotExist": "Code does not exist"
+    },
     "user": {
       "emptyDescription": "This user has no description."
     },
@@ -69,7 +75,8 @@
       "setRequired": "Set is required"
     },
     "set": {
-      "nameRequired": "Set name is required"
+      "nameRequired": "Set name is required",
+      "setIdRequired": "Set code is required"
     }
   },
   "button": {
@@ -97,7 +104,10 @@
     "privacy&safety": "Privacy & Safety",
     "account": "Account",
     "createAFlashcard": "Create a Flashcard",
-    "createASet": "Create a Set"
+    "createASet": "Create a Set",
+    "downloadASet": "Download a Set",
+    "shareAFlashcard": "Share a Flashcard",
+    "shareAFlashcard.subTitle": "Choose one set below to view it share code and share it with your friends"
   },
   "label": {
     "term": "Term",
@@ -132,7 +142,8 @@
     "newPassword": "Enter your new password",
     "setName": "Enter the name of the set",
     "setDescription": "Description is optional",
-    "searchFlashcards": "Search flashcards"
+    "searchFlashcards": "Search flashcards",
+    "setCode": "Please type Set code"
   },
   "tab": {
     "gallery": "Gallery",

@@ -16,6 +16,7 @@ import type {
 import type * as flashcards from "../flashcards.js";
 import type * as http from "../http.js";
 import type * as sets from "../sets.js";
+import type * as sharecode from "../sharecode.js";
 import type * as users from "../users.js";
 
 /**
@@ -30,6 +31,7 @@ declare const fullApi: ApiFromModules<{
   flashcards: typeof flashcards;
   http: typeof http;
   sets: typeof sets;
+  sharecode: typeof sharecode;
   users: typeof users;
 }>;
 export declare const api: FilterApi<

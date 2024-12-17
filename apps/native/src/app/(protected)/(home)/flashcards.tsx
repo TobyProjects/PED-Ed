@@ -23,6 +23,7 @@ import {
   useMutation as useTanstackMutation,
 } from "@tanstack/react-query";
 import { convexQuery, useConvexMutation } from "@convex-dev/react-query";
+import { Share } from "@/components/icons/Share";
 
 export default function () {
   const { t } = useTranslation();
@@ -46,6 +47,10 @@ export default function () {
   const setsQuery = useTanstackQuery(convexQuery(api.sets.getSets, { userId }));
   const sets = setsQuery.data;
 
+  const sharedSets = useTanstackQuery(
+    convexQuery(api.sets.getSharedSets, { userId }),
+  );
+
   useEffect(() => {
     navigation.setOptions({
       headerTitle: () => (
@@ -61,6 +66,16 @@ export default function () {
           }
         >
           <SquarePlus className="text-primary" />
+        </Pressable>
+      ),
+      headerLeft: () => (
+        <Pressable
+          className="p-3"
+          onPress={() =>
+            router.push("/(protected)/(flashcards)/share-flashcard")
+          }
+        >
+          <Share className="text-primary" />
         </Pressable>
       ),
     });
@@ -107,6 +122,9 @@ export default function () {
           />
 
           <View className="mt-12">
+            <Text className="text-foreground text-xl font-semibold mb-2">
+              My Flashcards
+            </Text>
             {usersQuery.isPending || setsQuery.isPending ? (
               <View className="">
                 <ActivityIndicator color={"#3d61ff"} />
@@ -128,6 +146,33 @@ export default function () {
               />
             )}
           </View>
+          {sharedSets.data != null && sharedSets.data.length > 0 ? (
+            <View className="mt-12">
+              <Text className="text-foreground text-xl font-semibold mb-2">
+                Shared Flashcards
+              </Text>
+              {usersQuery.isPending || setsQuery.isPending ? (
+                <View className="">
+                  <ActivityIndicator color={"#3d61ff"} />
+                </View>
+              ) : (
+                <FlashList
+                  data={sharedSets.data}
+                  renderItem={({ item }) => (
+                    <FlashCardSetItem
+                      name={item.name}
+                      description={item.description}
+                      cardCount={1}
+                      onPress={() => {
+                        router.replace(`/(protected)/flashcard/${item._id}`);
+                      }}
+                    />
+                  )}
+                  estimatedItemSize={200}
+                />
+              )}
+            </View>
+          ) : null}
         </View>
       </View>
     </ScrollView>
