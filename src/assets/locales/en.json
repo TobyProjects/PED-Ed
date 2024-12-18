@@ -1,0 +1,167 @@
+{
+  "app": {
+    "name": "PED Ed",
+    "welcome": "Welcome to",
+    "slogan": "The free and effective way for learning"
+  },
+  "text": {
+    "memberSince": "Member Since",
+    "aboutMe": "About Me",
+    "cardCount": "{{number}} cards",
+    "hiMorning": "Good afternoon {{name}}",
+    "hiAfternoon": "Good morning {{name}}",
+    "hiEvening": "Good evening {{name}}",
+    "morning": "Wishing you a wonderful start to your day!",
+    "afternoon": "Hope your day is going well!",
+    "evening": "Wishing you a peaceful and relaxing evening!",
+    "shareCodeIs": "Share code of this flashcard is {{code}}",
+    "shareCodeAttention": "This code will be delete after 10 minutes"
+  },
+  "alert": {
+    "somethingWentWrong": "Something went wrong",
+    "email": {
+      "verificationSent": "We sent a verification code to your email",
+      "resetPasswordCodeSent": "Please check your email for the verification code and enter it to proceed"
+    },
+    "user": {
+      "profileUpdated": "Profile updated",
+      "usernameUpdated": "Username updated"
+    },
+    "password": {
+      "updated": "Password updated"
+    },
+    "set": {
+      "created": "Set created",
+      "imported": "Set imported"
+    },
+    "flashcard": {
+      "created": "Flashcard created",
+      "updated": "Flashcard updated"
+    }
+  },
+  "error": {
+    "shareCode": {
+      "codeNotExist": "Code does not exist"
+    },
+    "user": {
+      "emptyDescription": "This user has no description."
+    },
+    "email": {
+      "invalid": "Invalid email address",
+      "required": "Email is required"
+    },
+    "username": {
+      "required": "Username is required",
+      "tooShort": "Username must be at least 5 characters long",
+      "tooLong": "Username cannot exceed 20 characters"
+    },
+    "firstName": {
+      "required": "First name is required"
+    },
+    "lastName": {
+      "required": "Last name is required"
+    },
+    "password": {
+      "required": "Password is required",
+      "tooShort": "Password must be at least 8 characters long",
+      "tooLong": "Password cannot exceed 100 characters",
+      "misMatch": "Passwords do not match"
+    },
+    "verificationCode": {
+      "required": "Verification code is required"
+    },
+    "flashcard": {
+      "termRequired": "Term is required",
+      "definitionRequired": "Definition is required",
+      "setRequired": "Set is required"
+    },
+    "set": {
+      "nameRequired": "Set name is required",
+      "setIdRequired": "Set code is required"
+    }
+  },
+  "button": {
+    "signUp": "Create an account",
+    "signIn": "Sign in",
+    "verifyEmail": "Verify my email",
+    "signOut": "Sign Out",
+    "editProfile": "Edit Profile",
+    "changeAvatar": "Change Avatar",
+    "resetPassword": "Reset password",
+    "changePassword": "Change My Password",
+    "deleteMyAccount": "Delete My Account",
+    "addFlashcard": "Add Flashcard",
+    "createSet": "Create Set",
+    "uploadImage": "Upload Image",
+    "updateImage": "Update Image",
+    "edit": "Edit",
+    "moveUp": "Move Up",
+    "moveDown": "Move Down",
+    "updateFlashcard": "Update Flashcard",
+    "removeImage": "Remove Image"
+  },
+  "title": {
+    "signUp": "Create an account",
+    "signIn": "Welcome back",
+    "signIn.subTitle": "We are so excited to see you again.",
+    "verifyEmail": "Verify your email",
+    "settings": "Settings",
+    "appearance": "Appearance",
+    "resetPassword": "Reset password",
+    "privacy&safety": "Privacy & Safety",
+    "account": "Account",
+    "createAFlashcard": "Create a Flashcard",
+    "createASet": "Create a Set",
+    "downloadASet": "Download a Set",
+    "shareAFlashcard": "Share a Flashcard",
+    "shareAFlashcard.subTitle": "Choose one set below to view it share code and share it with your friends",
+    "edit": "Edit {{name}}"
+  },
+  "label": {
+    "term": "Term",
+    "definition": "Definition",
+    "image": "Image",
+    "accountInformation": "Account Information",
+    "email": "Email",
+    "password": "Password",
+    "firstName": "First Name",
+    "lastName": "Last Name",
+    "username": "Username",
+    "password2": "Confirm Password",
+    "verifyCode": "Verification Code",
+    "forgotPassword": "Forgot your password?",
+    "aboutMe": "About Me",
+    "newPassword": "New Password",
+    "oldPassword": "Old Password",
+    "changePassword": "Change My Password",
+    "accountManagement": "Account Management",
+    "security": "Security",
+    "set": "Set"
+  },
+  "placeholder": {
+    "email": "Enter your email address",
+    "password": "Enter your password",
+    "username": "Choose a unique username",
+    "firstName": "Enter your first name",
+    "lastName": "Enter your last name",
+    "password2": "Re-enter your password",
+    "verifyCode": "Enter the verification code sent to your email",
+    "aboutMe": "Hello everyone...",
+    "newPassword": "Enter your new password",
+    "setName": "Enter the name of the set",
+    "setDescription": "Description is optional",
+    "searchFlashcards": "Search flashcards",
+    "setCode": "Please type Set code"
+  },
+  "tab": {
+    "gallery": "Gallery",
+    "flashcards": "Flashcards",
+    "home": "Home",
+    "pomodoro": "Pomodoro",
+    "profile": "Profile"
+  },
+  "input": {
+    "selectSet": "Please select an existing set or create a new one",
+    "canCreateANewSet": "You can create a new set also"
+  }
+}
