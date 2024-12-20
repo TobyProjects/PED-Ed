@@ -15,7 +15,10 @@
     "afternoon": "Hope your day is going well!",
     "evening": "Wishing you a peaceful and relaxing evening!",
     "shareCodeIs": "Share code of this flashcard is {{code}}",
-    "shareCodeAttention": "This code will be delete after 10 minutes"
+    "shareCodeAttention": "This code will be delete after 10 minutes",
+    "cycles": "{{current}} / {{total}}",
+    "clockWork": "Work time",
+    "clockBreak": "Take a break"
   },
   "alert": {
     "somethingWentWrong": "Something went wrong",
@@ -37,6 +40,9 @@
     "flashcard": {
       "created": "Flashcard created",
       "updated": "Flashcard updated"
+    },
+    "pomodoro": {
+      "configUpdated": "Config updated"
     }
   },
   "error": {
@@ -98,7 +104,12 @@
     "moveUp": "Move Up",
     "moveDown": "Move Down",
     "updateFlashcard": "Update Flashcard",
-    "removeImage": "Remove Image"
+    "removeImage": "Remove Image",
+    "saveChanges": "Save Changes",
+    "stop": "Stop",
+    "start": "Start",
+    "reset": "Reset",
+    "settings": "Settings"
   },
   "title": {
     "signUp": "Create an account",
@@ -115,7 +126,8 @@
     "downloadASet": "Download a Set",
     "shareAFlashcard": "Share a Flashcard",
     "shareAFlashcard.subTitle": "Choose one set below to view it share code and share it with your friends",
-    "edit": "Edit {{name}}"
+    "edit": "Edit {{name}}",
+    "pomodoroClockSettings": "Pomodoro Clock Settings"
   },
   "label": {
     "term": "Term",
@@ -136,7 +148,10 @@
     "changePassword": "Change My Password",
     "accountManagement": "Account Management",
     "security": "Security",
-    "set": "Set"
+    "set": "Set",
+    "workDuration": "Work Duration",
+    "breakDuration": "Break Duration",
+    "cycles": "Cycles"
   },
   "placeholder": {
     "email": "Enter your email address",

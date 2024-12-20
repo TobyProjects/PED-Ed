@@ -1,9 +1,10 @@
 import { SquarePlus } from "@/components/icons/SquarePlus";
 import { Text } from "@/components/ui/text";
+import CircularClock from "@/features/pomodoro/components/CircularClock";
 import { useNavigation } from "expo-router";
 import React, { useEffect } from "react";
 import { useTranslation } from "react-i18next";
-import { Pressable, ScrollView } from "react-native";
+import { Pressable, ScrollView, View } from "react-native";
 
 export default function () {
   const { t } = useTranslation();
@@ -16,16 +17,13 @@ export default function () {
           {t("tab.pomodoro")}
         </Text>
       ),
-      headerRight: () => (
-        <Pressable className="p-3" onPress={() => console.log("Add new card")}>
-          <SquarePlus className="text-primary" />
-        </Pressable>
-      ),
     });
   }, [navigation]);
   return (
-    <ScrollView className="bg-background w-full h-full">
-      <Text>Profile</Text>
-    </ScrollView>
+    <View className="bg-background w-full h-full">
+      <View className="flex justify-center items-center w-full h-full">
+        <CircularClock />
+      </View>
+    </View>
   );
 }
